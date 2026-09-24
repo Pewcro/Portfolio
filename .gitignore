@@ -1,0 +1,16 @@
+# Ignore database credentials
+db.php
+
+# Ignore uploaded user images
+uploads/profile/*
+uploads/projects/*
+
+# Keep the folder structure
+!uploads/profile/.gitkeep
+!uploads/projects/.gitkeep
+
+# Ignore OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
