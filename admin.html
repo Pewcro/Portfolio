@@ -10,6 +10,10 @@
         .glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); }
         input, textarea { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.2); color: white; width: 100%; padding: 10px; border-radius: 5px; margin-top: 5px; }
         label { font-size: 0.8rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        .tab-btn { padding: 10px 20px; border-bottom: 2px solid transparent; cursor: pointer; text-transform: uppercase; font-size: 0.8rem; font-weight: bold; color: #aaa; }
+        .tab-btn.active { border-bottom: 2px solid #fff; color: #fff; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 </head>
 <body class="p-6 md:p-12">
@@ -22,7 +26,7 @@
     <p id="login-error" class="text-red-400 text-sm mt-4"></p>
 </div>
 
-<div id="dashboard-screen" class="max-w-2xl mx-auto" style="display:none;">
+<div id="dashboard-screen" class="max-w-4xl mx-auto" style="display:none;">
     <div class="flex justify-between items-center mb-10">
         <h2 class="text-3xl font-light tracking-wide">Dashboard</h2>
         <div class="space-x-4">
@@ -30,8 +34,18 @@
             <button id="logout-btn" class="text-sm text-red-400 hover:text-red-300">Logout</button>
         </div>
     </div>
-    <div class="glass p-8 rounded-xl">
-        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Edit Profil</h3>
+
+    <!-- Tabs -->
+    <div class="flex gap-4 border-b border-white/10 mb-8">
+        <div class="tab-btn active" data-target="tab-profile">Profil</div>
+        <div class="tab-btn" data-target="tab-projects">Projects</div>
+        <div class="tab-btn" data-target="tab-skills">Skills</div>
+        <div class="tab-btn" data-target="tab-socials">Social Links</div>
+    </div>
+
+    <!-- TAB: PROFIL -->
+    <div id="tab-profile" class="tab-content active glass p-8 rounded-xl">
+        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Edit Profil Utama</h3>
         <div class="space-y-4">
             <div><label>Nama Lengkap</label><input type="text" id="full_name"></div>
             <div><label>Nama Singkat (Logo)</label><input type="text" id="short_name"></div>
@@ -39,11 +53,60 @@
             <div><label>Hero Description</label><textarea id="hero_desc" rows="2"></textarea></div>
             <div><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4"></textarea></div>
             <div><label>Email Kontak</label><input type="email" id="contact_email"></div>
-            <div><label>URL Foto Profil</label><input type="text" id="profile_image" placeholder="https://..."></div>
-            <button id="save-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full cursor-pointer">Simpan Perubahan</button>
+            <div>
+                <label>Foto Profil (Upload File)</label>
+                <input type="file" id="profile_image_file" accept="image/*">
+                <input type="hidden" id="profile_image">
+                <img id="profile_image_preview" src="" class="mt-2 h-20 w-20 object-cover rounded hidden">
+            </div>
+            <button id="save-profile-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full cursor-pointer">Simpan Profil</button>
             <p id="save-msg" class="text-green-400 text-sm text-center mt-2"></p>
         </div>
     </div>
+
+    <!-- TAB: PROJECTS -->
+    <div id="tab-projects" class="tab-content glass p-8 rounded-xl">
+        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Projects</h3>
+        
+        <div class="mb-8 p-4 border border-white/20 rounded-lg bg-white/5">
+            <h4 class="text-lg mb-4 text-zinc-300">Tambah Project Baru</h4>
+            <div class="space-y-3">
+                <input type="text" id="new_proj_title" placeholder="Judul Project">
+                <textarea id="new_proj_desc" placeholder="Deskripsi" rows="2"></textarea>
+                <input type="text" id="new_proj_tags" placeholder="Tags (pisahkan koma, misal: Python, Game)">
+                <input type="text" id="new_proj_github" placeholder="Link GitHub">
+                <div>
+                    <label>Gambar Project</label>
+                    <input type="file" id="new_proj_image" accept="image/*">
+                </div>
+                <button id="add-proj-btn" class="bg-green-600 px-4 py-2 rounded text-sm font-bold w-full">Tambah Project</button>
+                <p id="proj-msg" class="text-sm mt-2"></p>
+            </div>
+        </div>
+
+        <h4 class="text-lg mb-4 text-zinc-300">Daftar Project</h4>
+        <div id="projects-list" class="space-y-4"></div>
+    </div>
+
+    <!-- TAB: SKILLS -->
+    <div id="tab-skills" class="tab-content glass p-8 rounded-xl">
+        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Skills</h3>
+        <div class="flex gap-2 mb-6">
+            <input type="text" id="new_skill_name" placeholder="Nama Skill (misal: React JS)">
+            <button id="add-skill-btn" class="bg-green-600 px-6 py-2 rounded font-bold">Tambah</button>
+        </div>
+        <p id="skill-msg" class="text-sm mt-2 mb-4"></p>
+        <ul id="skills-list" class="space-y-2"></ul>
+    </div>
+
+    <!-- TAB: SOCIALS -->
+    <div id="tab-socials" class="tab-content glass p-8 rounded-xl">
+        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Social Links</h3>
+        <div id="socials-list" class="space-y-4"></div>
+        <button id="save-socials-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-6 hover:bg-blue-500 w-full cursor-pointer">Simpan Social Links</button>
+        <p id="social-msg" class="text-sm text-center mt-2"></p>
+    </div>
+
 </div>
 
 <script type="module">
@@ -54,102 +117,270 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo'
     );
 
-    var loginScreen = document.getElementById('login-screen');
-    var dashScreen = document.getElementById('dashboard-screen');
-    var loginBtn = document.getElementById('login-btn');
-    var logoutBtn = document.getElementById('logout-btn');
-    var saveBtn = document.getElementById('save-btn');
-    var errEl = document.getElementById('login-error');
+    // TAB NAVIGATION
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+        });
+    });
 
-    function showDashboard() {
-        loginScreen.style.display = 'none';
-        dashScreen.style.display = 'block';
-        loadProfile();
+    // UPLOAD HELPER
+    async function uploadFile(file) {
+        if (!file) return null;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+        
+        const { data, error } = await db.storage.from('images').upload(fileName, file);
+        if (error) throw error;
+        
+        const { data: publicUrlData } = db.storage.from('images').getPublicUrl(fileName);
+        return publicUrlData.publicUrl;
     }
 
-    function showLogin() {
-        loginScreen.style.display = 'block';
-        dashScreen.style.display = 'none';
-    }
-
-    // Cek apakah sudah login
+    // LOGIN & AUTH
     var session = await db.auth.getSession();
-    if (session.data.session) {
-        showDashboard();
-    }
+    if (session.data.session) showDashboard();
 
-    // LOGIN
-    loginBtn.addEventListener('click', async function() {
-        var email = document.getElementById('email').value;
-        var pass = document.getElementById('password').value;
-        errEl.innerText = '';
-
-        if (!email || !pass) { errEl.innerText = 'Isi email dan password!'; return; }
-
-        loginBtn.innerText = 'Loading...';
-        loginBtn.disabled = true;
-
-        var res = await db.auth.signInWithPassword({ email: email, password: pass });
-
+    document.getElementById('login-btn').addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        const btn = document.getElementById('login-btn');
+        const errEl = document.getElementById('login-error');
+        
+        if (!email || !pass) { errEl.innerText = 'Isi form!'; return; }
+        
+        btn.innerText = 'Loading...'; btn.disabled = true;
+        const res = await db.auth.signInWithPassword({ email, password: pass });
+        
         if (res.error) {
             errEl.innerText = res.error.message;
-            loginBtn.innerText = 'Login';
-            loginBtn.disabled = false;
+            btn.innerText = 'Login'; btn.disabled = false;
         } else {
-            loginBtn.innerText = 'Berhasil!';
             showDashboard();
         }
     });
 
-    // Enter key untuk login
-    document.getElementById('password').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') loginBtn.click();
+    document.getElementById('password').addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.getElementById('login-btn').click();
     });
 
-    // LOGOUT
-    logoutBtn.addEventListener('click', async function() {
+    document.getElementById('logout-btn').addEventListener('click', async () => {
         await db.auth.signOut();
-        showLogin();
+        document.getElementById('login-screen').style.display = 'block';
+        document.getElementById('dashboard-screen').style.display = 'none';
     });
 
-    // LOAD PROFILE
+    function showDashboard() {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard-screen').style.display = 'block';
+        loadAllData();
+    }
+
+    // LOAD ALL DATA
+    async function loadAllData() {
+        loadProfile();
+        loadProjects();
+        loadSkills();
+        loadSocials();
+    }
+
+    // --- PROFILE ---
     async function loadProfile() {
-        var res = await db.from('profile').select('*').single();
-        if (res.data) {
-            document.getElementById('full_name').value = res.data.full_name || '';
-            document.getElementById('short_name').value = res.data.short_name || '';
-            document.getElementById('roles').value = res.data.roles || '';
-            document.getElementById('hero_desc').value = res.data.hero_desc || '';
-            document.getElementById('about_text').value = res.data.about_text || '';
-            document.getElementById('contact_email').value = res.data.email || '';
-            document.getElementById('profile_image').value = res.data.profile_image || '';
+        const { data } = await db.from('profile').select('*').single();
+        if (data) {
+            document.getElementById('full_name').value = data.full_name || '';
+            document.getElementById('short_name').value = data.short_name || '';
+            document.getElementById('roles').value = data.roles || '';
+            document.getElementById('hero_desc').value = data.hero_desc || '';
+            document.getElementById('about_text').value = data.about_text || '';
+            document.getElementById('contact_email').value = data.email || '';
+            document.getElementById('profile_image').value = data.profile_image || '';
+            
+            if(data.profile_image) {
+                const imgPreview = document.getElementById('profile_image_preview');
+                imgPreview.src = data.profile_image;
+                imgPreview.style.display = 'block';
+            }
         }
     }
 
-    // SAVE PROFILE
-    saveBtn.addEventListener('click', async function() {
-        var msg = document.getElementById('save-msg');
-        msg.innerText = 'Menyimpan...';
-        msg.className = 'text-yellow-400 text-sm text-center mt-2';
+    document.getElementById('save-profile-btn').addEventListener('click', async () => {
+        const msg = document.getElementById('save-msg');
+        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 text-sm mt-2';
+        
+        try {
+            let imgUrl = document.getElementById('profile_image').value;
+            const fileInput = document.getElementById('profile_image_file');
+            if (fileInput.files.length > 0) {
+                imgUrl = await uploadFile(fileInput.files[0]);
+            }
 
-        var res = await db.from('profile').update({
-            full_name: document.getElementById('full_name').value,
-            short_name: document.getElementById('short_name').value,
-            roles: document.getElementById('roles').value,
-            hero_desc: document.getElementById('hero_desc').value,
-            about_text: document.getElementById('about_text').value,
-            email: document.getElementById('contact_email').value,
-            profile_image: document.getElementById('profile_image').value
-        }).eq('id', 1);
+            const { error } = await db.from('profile').update({
+                full_name: document.getElementById('full_name').value,
+                short_name: document.getElementById('short_name').value,
+                roles: document.getElementById('roles').value,
+                hero_desc: document.getElementById('hero_desc').value,
+                about_text: document.getElementById('about_text').value,
+                email: document.getElementById('contact_email').value,
+                profile_image: imgUrl
+            }).eq('id', 1);
 
-        if (res.error) {
-            msg.innerText = 'Gagal: ' + res.error.message;
-            msg.className = 'text-red-400 text-sm text-center mt-2';
-        } else {
-            msg.innerText = 'Berhasil disimpan!';
-            msg.className = 'text-green-400 text-sm text-center mt-2';
-            setTimeout(function() { msg.innerText = ''; }, 3000);
+            if (error) throw error;
+            msg.innerText = 'Berhasil disimpan!'; msg.className = 'text-green-400 text-sm mt-2';
+            loadProfile(); // reload img preview
+        } catch (err) {
+            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 text-sm mt-2';
         }
+        setTimeout(() => msg.innerText = '', 3000);
+    });
+
+    // --- PROJECTS ---
+    async function loadProjects() {
+        const list = document.getElementById('projects-list');
+        list.innerHTML = 'Loading...';
+        const { data } = await db.from('projects').select('*').order('id', {ascending: true});
+        list.innerHTML = '';
+        
+        if(data) {
+            data.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center bg-white/10 p-4 rounded';
+                div.innerHTML = `
+                    <div class="flex gap-4 items-center">
+                        <img src="${p.image}" class="w-16 h-16 object-cover rounded">
+                        <div>
+                            <h5 class="font-bold">${p.title}</h5>
+                            <p class="text-xs text-zinc-400">${p.tags}</p>
+                        </div>
+                    </div>
+                    <button class="del-proj-btn bg-red-600 px-3 py-1 rounded text-xs" data-id="${p.id}">Hapus</button>
+                `;
+                list.appendChild(div);
+            });
+
+            document.querySelectorAll('.del-proj-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    if(confirm('Hapus project ini?')) {
+                        await db.from('projects').delete().eq('id', id);
+                        loadProjects();
+                    }
+                });
+            });
+        }
+    }
+
+    document.getElementById('add-proj-btn').addEventListener('click', async () => {
+        const msg = document.getElementById('proj-msg');
+        const title = document.getElementById('new_proj_title').value;
+        const desc = document.getElementById('new_proj_desc').value;
+        const tags = document.getElementById('new_proj_tags').value;
+        const github = document.getElementById('new_proj_github').value;
+        const fileInput = document.getElementById('new_proj_image');
+        
+        if(!title) { msg.innerText = "Judul wajib diisi!"; msg.className="text-red-400"; return; }
+        
+        msg.innerText = 'Mengupload dan menyimpan...'; msg.className="text-yellow-400";
+        try {
+            let imgUrl = 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop'; // default
+            if(fileInput.files.length > 0) {
+                imgUrl = await uploadFile(fileInput.files[0]);
+            }
+
+            const { error } = await db.from('projects').insert([{
+                title: title, description: desc, tags: tags, github_link: github, image: imgUrl
+            }]);
+
+            if(error) throw error;
+            msg.innerText = 'Project ditambahkan!'; msg.className="text-green-400";
+            
+            // reset form
+            document.getElementById('new_proj_title').value = '';
+            document.getElementById('new_proj_desc').value = '';
+            document.getElementById('new_proj_tags').value = '';
+            document.getElementById('new_proj_github').value = '';
+            fileInput.value = '';
+            
+            loadProjects();
+        } catch(err) {
+            msg.innerText = 'Gagal: ' + err.message; msg.className="text-red-400";
+        }
+        setTimeout(() => msg.innerText = '', 3000);
+    });
+
+    // --- SKILLS ---
+    async function loadSkills() {
+        const list = document.getElementById('skills-list');
+        list.innerHTML = 'Loading...';
+        const { data } = await db.from('skills').select('*').order('id');
+        list.innerHTML = '';
+        
+        if(data) {
+            data.forEach(s => {
+                const li = document.createElement('li');
+                li.className = 'flex justify-between bg-white/10 px-4 py-2 rounded';
+                li.innerHTML = `<span>${s.skill_name}</span> <button class="del-skill-btn text-red-400 hover:text-red-300" data-id="${s.id}">Hapus</button>`;
+                list.appendChild(li);
+            });
+
+            document.querySelectorAll('.del-skill-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    await db.from('skills').delete().eq('id', id);
+                    loadSkills();
+                });
+            });
+        }
+    }
+
+    document.getElementById('add-skill-btn').addEventListener('click', async () => {
+        const val = document.getElementById('new_skill_name').value;
+        const msg = document.getElementById('skill-msg');
+        if(!val) return;
+        
+        const { error } = await db.from('skills').insert([{ skill_name: val }]);
+        if(error) { msg.innerText = error.message; msg.className="text-red-400"; }
+        else {
+            document.getElementById('new_skill_name').value = '';
+            loadSkills();
+        }
+    });
+
+    // --- SOCIALS ---
+    let socialsData = [];
+    async function loadSocials() {
+        const list = document.getElementById('socials-list');
+        list.innerHTML = 'Loading...';
+        const { data } = await db.from('social_links').select('*').order('id');
+        list.innerHTML = '';
+        socialsData = data || [];
+        
+        if(data) {
+            data.forEach(s => {
+                const div = document.createElement('div');
+                div.innerHTML = `<label>${s.platform}</label><input type="text" id="social_${s.id}" value="${s.url}">`;
+                list.appendChild(div);
+            });
+        }
+    }
+
+    document.getElementById('save-socials-btn').addEventListener('click', async () => {
+        const msg = document.getElementById('social-msg');
+        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 mt-2';
+        
+        try {
+            for (let s of socialsData) {
+                const newVal = document.getElementById(`social_${s.id}`).value;
+                await db.from('social_links').update({ url: newVal }).eq('id', s.id);
+            }
+            msg.innerText = 'Social Links disimpan!'; msg.className = 'text-green-400 mt-2';
+        } catch(err) {
+            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 mt-2';
+        }
+        setTimeout(() => msg.innerText = '', 3000);
     });
 </script>
 </body>
