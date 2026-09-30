@@ -8,14 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="p-6 md:p-12">
+<body class="selection:bg-white selection:text-black">
 
-<div id="login-screen" class="max-w-sm mx-auto mt-20 glass p-8 rounded-xl text-center">
-    <h2 class="text-2xl font-light mb-6 tracking-widest">ADMIN LOGIN</h2>
-    <input type="email" id="email" placeholder="Email" class="mb-4">
-    <input type="password" id="password" placeholder="Password" class="mb-6">
-    <button id="login-btn" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200 cursor-pointer">Login</button>
-    <p id="login-error" class="text-red-400 text-sm mt-4"></p>
 <div class="bg-glow"></div>
 <div class="bg-grid"></div>
 
@@ -167,7 +161,7 @@
         
         if (res.error) {
             errEl.innerText = res.error.message;
-            btn.innerText = 'Login'; btn.disabled = false;
+            btn.innerText = 'Login to Dashboard'; btn.disabled = false;
         } else {
             showDashboard();
         }
@@ -179,7 +173,7 @@
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
         await db.auth.signOut();
-        document.getElementById('login-screen').style.display = 'block';
+        document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('dashboard-screen').style.display = 'none';
     });
 
@@ -219,7 +213,7 @@
 
     document.getElementById('save-profile-btn').addEventListener('click', async () => {
         const msg = document.getElementById('save-msg');
-        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 text-sm mt-2';
+        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 text-sm mt-3 text-center';
         
         try {
             let imgUrl = document.getElementById('profile_image').value;
@@ -239,10 +233,10 @@
             }).eq('id', 1);
 
             if (error) throw error;
-            msg.innerText = 'Berhasil disimpan!'; msg.className = 'text-green-400 text-sm mt-2';
+            msg.innerText = 'Berhasil disimpan!'; msg.className = 'text-green-400 text-sm mt-3 text-center';
             loadProfile(); // reload img preview
         } catch (err) {
-            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 text-sm mt-2';
+            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 text-sm mt-3 text-center';
         }
         setTimeout(() => msg.innerText = '', 3000);
     });
@@ -382,16 +376,16 @@
 
     document.getElementById('save-socials-btn').addEventListener('click', async () => {
         const msg = document.getElementById('social-msg');
-        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 mt-2';
+        msg.innerText = 'Menyimpan...'; msg.className = 'text-yellow-400 text-center mt-3 text-sm';
         
         try {
             for (let s of socialsData) {
                 const newVal = document.getElementById(`social_${s.id}`).value;
                 await db.from('social_links').update({ url: newVal }).eq('id', s.id);
             }
-            msg.innerText = 'Social Links disimpan!'; msg.className = 'text-green-400 mt-2';
+            msg.innerText = 'Social Links disimpan!'; msg.className = 'text-green-400 text-center mt-3 text-sm';
         } catch(err) {
-            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 mt-2';
+            msg.innerText = 'Gagal: ' + err.message; msg.className = 'text-red-400 text-center mt-3 text-sm';
         }
         setTimeout(() => msg.innerText = '', 3000);
     });
