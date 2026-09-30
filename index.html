@@ -10,109 +10,30 @@
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * { box-sizing: border-box; }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #050505;
-            color: #a1a1aa;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: #a1a1aa; overflow-x: hidden; }
         h1,h2,h3,h4 { color: #f4f4f5; }
 
-        .bg-space {
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at top center, #18181b 0%, #050505 80%);
-            z-index: -2;
-        }
+        .bg-space { position: fixed; inset: 0; background: radial-gradient(circle at top center, #18181b 0%, #050505 80%); z-index: -2; }
+        .stars { position: fixed; inset: 0; z-index: -1; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,.8), transparent), radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,.6), transparent), radial-gradient(1px 1px at 90px 40px, #fff, transparent), radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,.9), transparent), radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,.4), transparent); background-repeat: repeat; background-size: 200px 200px; animation: drift 150s linear infinite; opacity: .15; }
+        @keyframes drift { to { transform: translateY(-200px); } }
 
-        .stars {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image:
-                radial-gradient(1px 1px at 20px 30px, #fff, transparent),
-                radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,.8), transparent),
-                radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,.6), transparent),
-                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
-                radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,.9), transparent),
-                radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,.4), transparent);
-            background-repeat: repeat;
-            background-size: 200px 200px;
-            animation: drift 150s linear infinite;
-            opacity: .15;
-        }
-        @keyframes drift {
-            to { transform: translateY(-200px); }
-        }
+        .glass { background: rgba(255,255,255,.02); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); }
+        nav.scrolled { background: rgba(5,5,5,.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,.05); }
 
-        .glass {
-            background: rgba(255,255,255,.02);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255,255,255,.05);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,.5);
-        }
+        .btn { display: inline-block; padding: 13px 34px; border: 1px solid rgba(255,255,255,.2); border-radius: 100px; color: #fff; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,.02); transition: all .4s ease; }
+        .btn:hover { background: #fff; color: #050505; box-shadow: 0 0 30px rgba(255,255,255,.12); transform: translateY(-2px); }
+        .btn-ghost { display: inline-block; padding: 13px 34px; border-radius: 100px; color: #71717a; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; transition: all .4s ease; }
+        .btn-ghost:hover { background: rgba(255,255,255,.05); color: #fff; }
 
-        nav.scrolled {
-            background: rgba(5,5,5,.88);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,.05);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 13px 34px;
-            border: 1px solid rgba(255,255,255,.2);
-            border-radius: 100px;
-            color: #fff;
-            font-size: .75rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: rgba(255,255,255,.02);
-            transition: all .4s ease;
-        }
-        .btn:hover {
-            background: #fff;
-            color: #050505;
-            box-shadow: 0 0 30px rgba(255,255,255,.12);
-            transform: translateY(-2px);
-        }
-
-        .btn-ghost {
-            display: inline-block;
-            padding: 13px 34px;
-            border-radius: 100px;
-            color: #71717a;
-            font-size: .75rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all .4s ease;
-        }
-        .btn-ghost:hover {
-            background: rgba(255,255,255,.05);
-            color: #fff;
-        }
-
-        .proj-img {
-            filter: grayscale(100%) brightness(.8);
-            transition: all .7s ease;
-        }
-        .proj-card:hover .proj-img {
-            filter: grayscale(20%) brightness(1);
-            transform: scale(1.04);
-        }
-
-        .grad-text {
-            background: linear-gradient(to right, #fff, #71717a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .proj-img { filter: grayscale(100%) brightness(.8); transition: all .7s ease; }
+        .proj-card:hover .proj-img { filter: grayscale(20%) brightness(1); transform: scale(1.04); }
+        .grad-text { background: linear-gradient(to right, #fff, #71717a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
 <body class="selection:bg-white selection:text-black">
@@ -123,170 +44,144 @@
 <!-- navbar -->
 <nav id="nav" class="fixed w-full z-50 py-6 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <a href="#" class="text-xl font-medium tracking-[.2em] uppercase text-white hover:opacity-60 transition-opacity">
-            JONATHAN.
+        <!-- Logo merujuk ke admin.html -->
+        <a href="admin.html" id="nav-logo" class="text-xl font-medium tracking-[.2em] uppercase text-white hover:opacity-60 transition-opacity">
+            ...
         </a>
         <div class="hidden md:flex gap-9 text-xs font-medium tracking-[.15em] uppercase">
-            <a href="#home"    class="text-white hover:opacity-60 transition-opacity">Home</a>
-            <a href="#about"   class="text-zinc-400 hover:text-white transition-colors">About</a>
+            <a href="#home" class="text-white hover:opacity-60 transition-opacity">Home</a>
+            <a href="#about" class="text-zinc-400 hover:text-white transition-colors">About</a>
             <a href="#projects" class="text-zinc-400 hover:text-white transition-colors">Work</a>
             <a href="#contact" class="text-zinc-400 hover:text-white transition-colors">Contact</a>
         </div>
-        <button class="md:hidden text-white"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
 
-<!-- ────────────────────── HERO -->
+<!-- HERO -->
 <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
     <div class="text-center max-w-3xl mx-auto mt-10">
-
         <p class="text-zinc-400 text-xs tracking-[.3em] uppercase mb-5 font-medium">Portfolio</p>
-
-        <h1 class="text-5xl md:text-7xl font-light grad-text mb-5 tracking-tight">
-            Jonathan Parulian Tobing
-        </h1>
-
+        <h1 id="hero-name" class="text-5xl md:text-7xl font-light grad-text mb-5 tracking-tight">Loading...</h1>
         <h2 class="text-xl md:text-3xl font-light text-zinc-300 mb-9 tracking-wide">
             I'm a <span id="typed" class="font-medium text-white"></span>
         </h2>
-
-        <p class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">
-            I am a college student in informatics engineering since 2023. I have a strong passion for technology and software development.
-        </p>
-
+        <p id="hero-desc" class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">...</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#projects" class="btn">View My Work</a>
-            <a href="https://github.com/Pewcro" target="_blank" class="btn-ghost">
-                <i class="fab fa-github mr-2"></i>GitHub
-            </a>
         </div>
     </div>
 </section>
 
-<!-- ────────────────────── ABOUT -->
+<!-- ABOUT -->
 <section id="about" class="py-32 px-6 relative z-10">
     <div class="max-w-6xl mx-auto">
-
         <div class="flex items-center gap-5 mb-14">
             <span class="text-xs text-zinc-500 tracking-[.2em] uppercase">01</span>
             <h2 class="text-2xl font-light tracking-wide text-white uppercase">About Me</h2>
             <div class="h-px bg-white/10 flex-grow max-w-xs"></div>
         </div>
-
         <div class="grid md:grid-cols-12 gap-14 items-center glass p-8 md:p-12 rounded-2xl">
-
-            <div class="md:col-span-7 space-y-5 text-zinc-400 text-base leading-relaxed font-light">
-                <p>Hello! My name is Jonathan. I am currently pursuing my degree in Informatics Engineering, starting my journey in 2023.</p>
-                <p>I enjoy building tools, websites, and games, always trying to learn new frameworks and technologies to improve my skills as a developer.</p>
-
-                <div class="pt-5">
-                    <p class="text-xs tracking-[.1em] text-white uppercase mb-4">Technologies</p>
-                    <ul class="grid grid-cols-2 gap-y-3 text-sm">
-                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>Python</li>
-                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>HTML5</li>
-                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>CSS3</li>
-                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>Canva Design</li>
-                    </ul>
-                </div>
+            <div class="md:col-span-7 space-y-5 text-zinc-400 text-base leading-relaxed font-light" id="about-text-container">
+                <!-- Text loaded via JS -->
             </div>
-
             <div class="md:col-span-5" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
                 <div class="glass rounded-2xl p-2">
-                    <!-- Ganti src ini dengan link foto kamu di github nanti atau masukkan ke folder assets -->
-                    <img src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?q=80&w=800&auto=format&fit=crop"
-                         alt="Jonathan"
-                         class="w-full rounded-xl object-cover aspect-[4/5]"
-                         style="filter: grayscale(30%) contrast(1.1);">
+                    <img id="about-img" src="" alt="Profile" class="w-full rounded-xl object-cover aspect-[4/5]" style="filter: grayscale(30%) contrast(1.1); display: none;">
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 
-<!-- ────────────────────── PROJECTS -->
+<!-- PROJECTS -->
 <section id="projects" class="py-32 px-6 relative z-10">
     <div class="max-w-6xl mx-auto">
-
         <div class="flex items-center gap-5 mb-14">
             <span class="text-xs text-zinc-500 tracking-[.2em] uppercase">02</span>
             <h2 class="text-2xl font-light tracking-wide text-white uppercase">Selected Work</h2>
             <div class="h-px bg-white/10 flex-grow max-w-xs"></div>
         </div>
-
-        <div class="grid md:grid-cols-2 gap-10">
-            <!-- Project 1 -->
-            <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.05">
-                <div class="h-56 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-black/20 z-10 group-hover:bg-transparent transition-all duration-500"></div>
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop"
-                         alt="Tank Game 2D"
-                         class="proj-img w-full h-full object-cover absolute inset-0">
-                    <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity duration-400 backdrop-blur-sm">
-                        <a href="https://github.com/Pewcro" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7 flex flex-col flex-grow">
-                    <h3 class="text-lg font-medium text-white mb-2 tracking-wide">Tank Game 2D</h3>
-                    <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">A classic 2D tank shooter game built with Python.</p>
-                    <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">
-                        <span>Python</span><span>Game Dev</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.05">
-                <div class="h-56 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-black/20 z-10 group-hover:bg-transparent transition-all duration-500"></div>
-                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop"
-                         alt="RJB Flix"
-                         class="proj-img w-full h-full object-cover absolute inset-0">
-                    <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity duration-400 backdrop-blur-sm">
-                        <a href="https://github.com/Pewcro" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="p-7 flex flex-col flex-grow">
-                    <h3 class="text-lg font-medium text-white mb-2 tracking-wide">RJB Flix</h3>
-                    <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">An application designed for streaming and watching anime and other entertainment.</p>
-                    <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">
-                        <span>HTML</span><span>CSS</span><span>Streaming</span>
-                    </div>
-                </div>
-            </div>
+        <div id="projects-container" class="grid md:grid-cols-2 gap-10">
+            <!-- Loading projects... -->
+            <p class="text-zinc-500">Loading projects...</p>
         </div>
-
     </div>
 </section>
 
-<!-- ────────────────────── CONTACT -->
+<!-- CONTACT -->
 <section id="contact" class="py-32 px-6 text-center relative z-10">
     <div class="max-w-2xl mx-auto glass p-14 rounded-3xl">
         <p class="text-zinc-500 text-xs tracking-[.2em] uppercase mb-5">03. Contact</p>
         <h2 class="text-4xl md:text-5xl font-light text-white mb-7 tracking-wide">Let's Connect</h2>
-        <p class="text-zinc-400 text-sm leading-relaxed mb-10 max-w-md mx-auto">
-            Whether it's a collab, freelance gig, or just saying hi — hit me up, I'll reply!
-        </p>
-        <a href="mailto:jonathanptobing@gmail.com" class="btn">Send an Email</a>
+        <a id="contact-email" href="#" class="btn mt-6">Send an Email</a>
     </div>
 </section>
 
-<!-- footer -->
-<footer class="py-10 border-t border-white/5 text-center text-zinc-600 relative z-10">
-    <div class="flex justify-center gap-7 mb-6">
-        <a href="https://github.com/Pewcro" target="_blank" class="hover:text-white transition-colors text-lg"><i class="fab fa-github"></i></a>
-        <a href="https://instagram.com/jonathannnpt" target="_blank" class="hover:text-white transition-colors text-lg"><i class="fab fa-instagram"></i></a>
-    </div>
-    <p class="text-[10px] tracking-[.2em] uppercase">
-        Built by Jonathan Parulian Tobing
-    </p>
-</footer>
-
 <script>
+    // Koneksi ke Supabase
+    const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_F88EL_oCbR3PKygQZ3SFnA_sIecAT57';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadData() {
+        try {
+            // Ambil Profil
+            const { data: profileData, error: profileErr } = await supabase.from('profile').select('*').limit(1).single();
+            if (profileData) {
+                document.title = profileData.full_name;
+                document.getElementById('nav-logo').innerText = profileData.short_name + '.';
+                document.getElementById('hero-name').innerText = profileData.full_name;
+                document.getElementById('hero-desc').innerText = profileData.hero_desc;
+                
+                const aboutContainer = document.getElementById('about-text-container');
+                aboutContainer.innerHTML = profileData.about_text.split('|').map(p => `<p>${p}</p>`).join('');
+                
+                const img = document.getElementById('about-img');
+                img.src = profileData.profile_image;
+                img.style.display = 'block';
+
+                document.getElementById('contact-email').href = 'mailto:' + profileData.email;
+
+                // Animasi teks role
+                const roles = profileData.roles.split(',').map(r => r.trim());
+                new Typed('#typed', {
+                    strings: roles,
+                    typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true,
+                });
+            }
+
+            // Ambil Projects
+            const { data: projectsData, error: projectsErr } = await supabase.from('projects').select('*').order('id', { ascending: true });
+            if (projectsData) {
+                const container = document.getElementById('projects-container');
+                container.innerHTML = '';
+                projectsData.forEach(p => {
+                    const tagsHtml = p.tags.split(',').map(t => `<span>${t.trim()}</span>`).join('');
+                    container.innerHTML += `
+                        <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2">
+                            <div class="h-56 overflow-hidden relative">
+                                <div class="absolute inset-0 bg-black/20 z-10 hover:bg-transparent transition-all"></div>
+                                <img src="${p.image}" class="proj-img w-full h-full object-cover absolute inset-0">
+                                <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
+                                    <a href="${p.github_link}" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                            <div class="p-7 flex flex-col flex-grow">
+                                <h3 class="text-lg font-medium text-white mb-2 tracking-wide">${p.title}</h3>
+                                <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">${p.description}</p>
+                                <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">${tagsHtml}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                // Re-init vanilla tilt untuk elemen baru
+                VanillaTilt.init(document.querySelectorAll(".proj-card"), { max: 2, glare: true, "max-glare": 0.05 });
+            }
+        } catch (error) {
+            console.error("Error loading data:", error);
+        }
+    }
+
     // sticky nav
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
@@ -295,15 +190,7 @@
         nav.classList.toggle('py-6', window.scrollY <= 50);
     });
 
-    // typed.js
-    new Typed('#typed', {
-        strings: ['Software Engineer', 'College Student', 'Creator'],
-        typeSpeed: 65,
-        backSpeed: 35,
-        backDelay: 2200,
-        loop: true,
-    });
+    loadData();
 </script>
-
 </body>
 </html>

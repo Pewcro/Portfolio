@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { background: #050505; color: #fff; font-family: sans-serif; }
+        .glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); }
+        input, textarea { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.2); color: white; width: 100%; padding: 10px; border-radius: 5px; margin-top: 5px; }
+        label { font-size: 0.8rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+
+<div id="login-screen" class="max-w-sm mx-auto mt-20 glass p-8 rounded-xl text-center">
+    <h2 class="text-2xl font-light mb-6 tracking-widest">ADMIN LOGIN</h2>
+    <input type="email" id="email" placeholder="Email Supabase" class="mb-4">
+    <input type="password" id="password" placeholder="Password Supabase" class="mb-6">
+    <button onclick="login()" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200">Login</button>
+    <p id="login-error" class="text-red-400 text-sm mt-4"></p>
+</div>
+
+<div id="dashboard-screen" class="max-w-2xl mx-auto hidden">
+    <div class="flex justify-between items-center mb-10">
+        <h2 class="text-3xl font-light tracking-wide">Dashboard</h2>
+        <div class="space-x-4">
+            <a href="index.html" class="text-sm text-gray-400 hover:text-white">Lihat Website</a>
+            <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+        </div>
+    </div>
+
+    <div class="glass p-8 rounded-xl">
+        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Edit Profil</h3>
+        <div class="space-y-4">
+            <div><label>Nama Lengkap</label><input type="text" id="full_name"></div>
+            <div><label>Nama Singkat (Logo)</label><input type="text" id="short_name"></div>
+            <div><label>Roles (Pisahkan dengan koma)</label><input type="text" id="roles"></div>
+            <div><label>Hero Description</label><textarea id="hero_desc" rows="2"></textarea></div>
+            <div><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4"></textarea></div>
+            <div><label>Email Kontak</label><input type="email" id="contact_email"></div>
+            <div>
+                <label>URL Foto Profil (Gunakan Link URL)</label>
+                <input type="text" id="profile_image" placeholder="https://...">
+            </div>
+            
+            <button onclick="saveProfile()" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full">Simpan Perubahan</button>
+            <p id="save-msg" class="text-green-400 text-sm text-center mt-2"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_F88EL_oCbR3PKygQZ3SFnA_sIecAT57';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function checkAuth() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+            loadProfile();
+        } else {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('dashboard-screen').classList.add('hidden');
+        }
+    }
+
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        
+        if (error) {
+            document.getElementById('login-error').innerText = error.message;
+        } else {
+            checkAuth();
+        }
+    }
+
+    async function logout() {
+        await supabase.auth.signOut();
+        checkAuth();
+    }
+
+    async function loadProfile() {
+        const { data, error } = await supabase.from('profile').select('*').single();
+        if (data) {
+            document.getElementById('full_name').value = data.full_name;
+            document.getElementById('short_name').value = data.short_name;
+            document.getElementById('roles').value = data.roles;
+            document.getElementById('hero_desc').value = data.hero_desc;
+            document.getElementById('about_text').value = data.about_text;
+            document.getElementById('contact_email').value = data.email;
+            document.getElementById('profile_image').value = data.profile_image;
+        }
+    }
+
+    async function saveProfile() {
+        const full_name = document.getElementById('full_name').value;
+        const short_name = document.getElementById('short_name').value;
+        const roles = document.getElementById('roles').value;
+        const hero_desc = document.getElementById('hero_desc').value;
+        const about_text = document.getElementById('about_text').value;
+        const email = document.getElementById('contact_email').value;
+        const profile_image = document.getElementById('profile_image').value;
+
+        // Asumsi ID selalu 1 (karena cuma ada 1 profil)
+        const { error } = await supabase.from('profile').update({
+            full_name, short_name, roles, hero_desc, about_text, email, profile_image
+        }).eq('id', 1);
+
+        const msg = document.getElementById('save-msg');
+        if (error) {
+            msg.innerText = "Gagal menyimpan: " + error.message;
+            msg.className = "text-red-400 text-sm text-center mt-2";
+        } else {
+            msg.innerText = "Profil berhasil disimpan!";
+            msg.className = "text-green-400 text-sm text-center mt-2";
+            setTimeout(() => msg.innerText = "", 3000);
+        }
+    }
+
+    checkAuth();
+</script>
+</body>
+</html>
