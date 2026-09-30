@@ -137,10 +137,10 @@
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
         
-        const { data, error } = await db.storage.from('images').upload(fileName, file);
+        const { data, error } = await db.storage.from('image').upload(fileName, file);
         if (error) throw error;
         
-        const { data: publicUrlData } = db.storage.from('images').getPublicUrl(fileName);
+        const { data: publicUrlData } = db.storage.from('image').getPublicUrl(fileName);
         return publicUrlData.publicUrl;
     }
 
