@@ -37,6 +37,7 @@ export default function AdminDashboard() {
   const [socialMsg, setSocialMsg] = useState({ text: '', color: '' });
 
   // Check auth on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) {
@@ -274,7 +275,7 @@ export default function AdminDashboard() {
             <div>
               <label>Foto Profil</label>
               <input type="file" accept="image/*" onChange={e => setProfileFile(e.target.files?.[0] || null)} className="text-sm" />
-              {profile.profile_image && <img src={profile.profile_image} className="mt-4 h-24 w-24 object-cover rounded-xl border border-white/10" />}
+              {profile.profile_image && <img src={profile.profile_image} alt="Profile preview" className="mt-4 h-24 w-24 object-cover rounded-xl border border-white/10" />}
             </div>
             <div className="md:col-span-2 mt-4">
               <button onClick={saveProfile} className="btn w-full !bg-indigo-600 !border-indigo-500 hover:!bg-indigo-500">Simpan Profil</button>
@@ -310,7 +311,7 @@ export default function AdminDashboard() {
             {projects.map(p => (
               <div key={p.id} className="flex flex-col sm:flex-row justify-between sm:items-center bg-white/5 border border-white/10 p-5 rounded-2xl gap-4">
                 <div className="flex gap-5 items-center">
-                  <img src={p.image} className="w-20 h-20 object-cover rounded-xl shadow-lg border border-white/10" />
+                  <img src={p.image} alt={p.title} className="w-20 h-20 object-cover rounded-xl shadow-lg border border-white/10" />
                   <div>
                     <h5 className="font-bold text-white text-lg">{p.title}</h5>
                     <p className="text-xs text-indigo-300 uppercase tracking-widest mt-1">{p.tags}</p>

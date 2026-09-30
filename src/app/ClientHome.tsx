@@ -2,12 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Typed from 'typed.js';
-import VanillaTilt from 'vanilla-tilt';
 
 export default function ClientHome({ profile, projects, skills, socials }: any) {
   const [isScrolled, setIsScrolled] = useState(false);
   const typedRef = useRef(null);
-  const tiltRefs = useRef([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -148,7 +146,7 @@ export default function ClientHome({ profile, projects, skills, socials }: any) 
             {projects?.map((p: any) => (
               <div key={p.id} className="proj-card glass rounded-2xl overflow-hidden flex flex-col">
                 <div className="h-56 overflow-hidden relative">
-                  <img src={p.image} className="proj-img w-full h-full object-cover absolute inset-0" />
+                  <img src={p.image} alt={p.title} className="proj-img w-full h-full object-cover absolute inset-0" />
                   <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
                     <a href={p.github_link} target="_blank" className="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1">
                       <i className="fab fa-github"></i>
