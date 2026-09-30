@@ -1,0 +1,144 @@
+/* =========================================
+   BASE STYLES & RESET
+========================================= */
+* { box-sizing: border-box; }
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: #050505; 
+    color: #a1a1aa; 
+    overflow-x: hidden; 
+}
+h1, h2, h3, h4 { color: #f4f4f5; }
+
+/* =========================================
+   BACKGROUND THEME (GRID + GLOW)
+========================================= */
+.bg-glow { 
+    position: fixed; 
+    inset: 0; 
+    z-index: -3; 
+    background: radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.12), transparent 40%), 
+                radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.12), transparent 40%); 
+    filter: blur(30px); 
+    animation: pulseGlow 15s ease-in-out infinite alternate; 
+}
+
+.bg-grid { 
+    position: fixed; 
+    inset: 0; 
+    z-index: -2; 
+    background-size: 40px 40px; 
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px), 
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px); 
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%); 
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%); 
+}
+
+@keyframes pulseGlow { 
+    0% { opacity: 0.5; transform: scale(1); } 
+    100% { opacity: 1; transform: scale(1.2); } 
+}
+
+/* =========================================
+   UI COMPONENTS (GLASSMORPHISM)
+========================================= */
+.glass { 
+    background: rgba(255,255,255,.02); 
+    backdrop-filter: blur(24px); 
+    border: 1px solid rgba(255,255,255,.05); 
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); 
+}
+
+nav.scrolled { 
+    background: rgba(5,5,5,.88); 
+    backdrop-filter: blur(20px); 
+    border-bottom: 1px solid rgba(255,255,255,.05); 
+}
+
+.grad-text { 
+    background: linear-gradient(to right, #fff, #71717a); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn { 
+    display: inline-block; 
+    padding: 13px 34px; 
+    border: 1px solid rgba(255,255,255,.2); 
+    border-radius: 100px; 
+    color: #fff; 
+    font-size: .75rem; 
+    font-weight: 500; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    background: rgba(255,255,255,.02); 
+    transition: all .4s ease; 
+    text-decoration: none; 
+}
+.btn:hover { 
+    background: #fff; 
+    color: #050505; 
+    box-shadow: 0 0 30px rgba(255,255,255,.12); 
+    transform: translateY(-2px); 
+}
+
+.btn-ghost { 
+    display: inline-block; 
+    padding: 13px 34px; 
+    border-radius: 100px; 
+    color: #71717a; 
+    font-size: .75rem; 
+    font-weight: 500; 
+    letter-spacing: 2px; 
+    text-transform: uppercase; 
+    transition: all .4s ease; 
+    text-decoration: none; 
+}
+.btn-ghost:hover { background: rgba(255,255,255,.05); color: #fff; }
+
+/* =========================================
+   PROJECT CARDS
+========================================= */
+.proj-img { filter: grayscale(100%) brightness(.8); transition: all .7s ease; }
+.proj-card:hover .proj-img { filter: grayscale(20%) brightness(1); transform: scale(1.04); }
+
+/* =========================================
+   ADMIN DASHBOARD FORMS & TABS
+========================================= */
+input, textarea { 
+    background: rgba(255,255,255,.05); 
+    border: 1px solid rgba(255,255,255,.2); 
+    color: white; 
+    width: 100%; 
+    padding: 10px; 
+    border-radius: 5px; 
+    margin-top: 5px; 
+    outline: none;
+    transition: border-color 0.3s;
+}
+input:focus, textarea:focus { border-color: rgba(255,255,255,.5); }
+label { font-size: 0.8rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+
+.tab-btn { 
+    padding: 10px 20px; 
+    border-bottom: 2px solid transparent; 
+    cursor: pointer; 
+    text-transform: uppercase; 
+    font-size: 0.8rem; 
+    font-weight: bold; 
+    color: #aaa; 
+    transition: all 0.3s;
+}
+.tab-btn:hover { color: #fff; }
+.tab-btn.active { border-bottom: 2px solid #fff; color: #fff; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
