@@ -15,6 +15,7 @@
 
 <div class="bg-glow"></div>
 <div class="bg-grid"></div>
+<div id="mouse-glow" class="mouse-glow"></div>
 
 <nav id="nav" class="fixed w-full z-50 py-6 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
@@ -207,6 +208,17 @@
     }
 
     loadData();
+
+    // Mouse Glow Tracking
+    const mouseGlow = document.getElementById('mouse-glow');
+    window.addEventListener('mousemove', (e) => {
+        mouseGlow.style.opacity = '1';
+        mouseGlow.style.left = e.clientX + 'px';
+        mouseGlow.style.top = e.clientY + 'px';
+    });
+    window.addEventListener('mouseout', () => {
+        mouseGlow.style.opacity = '0';
+    });
 </script>
 </body>
 </html>
