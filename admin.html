@@ -17,17 +17,17 @@
 <div id="login-screen" class="max-w-sm mx-auto mt-20 glass p-8 rounded-xl text-center">
     <h2 class="text-2xl font-light mb-6 tracking-widest">ADMIN LOGIN</h2>
     <input type="email" id="email" placeholder="Email" class="mb-4">
-    <input type="password" id="password" placeholder="Password" class="mb-6" onkeydown="if(event.key==='Enter')login()">
-    <button id="login-btn" onclick="login()" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200">Login</button>
+    <input type="password" id="password" placeholder="Password" class="mb-6">
+    <button id="login-btn" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200 cursor-pointer">Login</button>
     <p id="login-error" class="text-red-400 text-sm mt-4"></p>
 </div>
 
-<div id="dashboard-screen" class="max-w-2xl mx-auto hidden">
+<div id="dashboard-screen" class="max-w-2xl mx-auto" style="display:none;">
     <div class="flex justify-between items-center mb-10">
         <h2 class="text-3xl font-light tracking-wide">Dashboard</h2>
         <div class="space-x-4">
             <a href="index.html" class="text-sm text-gray-400 hover:text-white">Lihat Website</a>
-            <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+            <button id="logout-btn" class="text-sm text-red-400 hover:text-red-300">Logout</button>
         </div>
     </div>
     <div class="glass p-8 rounded-xl">
@@ -40,101 +40,116 @@
             <div><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4"></textarea></div>
             <div><label>Email Kontak</label><input type="email" id="contact_email"></div>
             <div><label>URL Foto Profil</label><input type="text" id="profile_image" placeholder="https://..."></div>
-            <button onclick="saveProfile()" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full">Simpan Perubahan</button>
+            <button id="save-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full cursor-pointer">Simpan Perubahan</button>
             <p id="save-msg" class="text-green-400 text-sm text-center mt-2"></p>
         </div>
     </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        var SUPA_URL = 'https://pohngtzslyytrimksoof.supabase.co';
-        var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
-        var db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-        function checkAuth() {
-            db.auth.getSession().then(function(res) {
-                if (res.data.session) {
-                    document.getElementById('login-screen').classList.add('hidden');
-                    document.getElementById('dashboard-screen').classList.remove('hidden');
-                    loadProfile();
-                } else {
-                    document.getElementById('login-screen').classList.remove('hidden');
-                    document.getElementById('dashboard-screen').classList.add('hidden');
-                }
-            });
+    var db = createClient(
+        'https://pohngtzslyytrimksoof.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo'
+    );
+
+    var loginScreen = document.getElementById('login-screen');
+    var dashScreen = document.getElementById('dashboard-screen');
+    var loginBtn = document.getElementById('login-btn');
+    var logoutBtn = document.getElementById('logout-btn');
+    var saveBtn = document.getElementById('save-btn');
+    var errEl = document.getElementById('login-error');
+
+    function showDashboard() {
+        loginScreen.style.display = 'none';
+        dashScreen.style.display = 'block';
+        loadProfile();
+    }
+
+    function showLogin() {
+        loginScreen.style.display = 'block';
+        dashScreen.style.display = 'none';
+    }
+
+    // Cek apakah sudah login
+    var session = await db.auth.getSession();
+    if (session.data.session) {
+        showDashboard();
+    }
+
+    // LOGIN
+    loginBtn.addEventListener('click', async function() {
+        var email = document.getElementById('email').value;
+        var pass = document.getElementById('password').value;
+        errEl.innerText = '';
+
+        if (!email || !pass) { errEl.innerText = 'Isi email dan password!'; return; }
+
+        loginBtn.innerText = 'Loading...';
+        loginBtn.disabled = true;
+
+        var res = await db.auth.signInWithPassword({ email: email, password: pass });
+
+        if (res.error) {
+            errEl.innerText = res.error.message;
+            loginBtn.innerText = 'Login';
+            loginBtn.disabled = false;
+        } else {
+            loginBtn.innerText = 'Berhasil!';
+            showDashboard();
         }
+    });
 
-        window.login = function() {
-            var btn = document.getElementById('login-btn');
-            var errEl = document.getElementById('login-error');
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
+    // Enter key untuk login
+    document.getElementById('password').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') loginBtn.click();
+    });
 
-            if (!email || !password) { errEl.innerText = 'Email dan password harus diisi!'; return; }
+    // LOGOUT
+    logoutBtn.addEventListener('click', async function() {
+        await db.auth.signOut();
+        showLogin();
+    });
 
-            btn.innerText = 'Loading...';
-            btn.disabled = true;
-            errEl.innerText = '';
-
-            db.auth.signInWithPassword({ email: email, password: password }).then(function(res) {
-                if (res.error) {
-                    errEl.innerText = res.error.message;
-                    btn.innerText = 'Login';
-                    btn.disabled = false;
-                } else {
-                    btn.innerText = 'Berhasil!';
-                    checkAuth();
-                }
-            });
-        };
-
-        window.logout = function() {
-            db.auth.signOut().then(function() { checkAuth(); });
-        };
-
-        function loadProfile() {
-            db.from('profile').select('*').single().then(function(res) {
-                var d = res.data;
-                if (d) {
-                    document.getElementById('full_name').value = d.full_name || '';
-                    document.getElementById('short_name').value = d.short_name || '';
-                    document.getElementById('roles').value = d.roles || '';
-                    document.getElementById('hero_desc').value = d.hero_desc || '';
-                    document.getElementById('about_text').value = d.about_text || '';
-                    document.getElementById('contact_email').value = d.email || '';
-                    document.getElementById('profile_image').value = d.profile_image || '';
-                }
-            });
+    // LOAD PROFILE
+    async function loadProfile() {
+        var res = await db.from('profile').select('*').single();
+        if (res.data) {
+            document.getElementById('full_name').value = res.data.full_name || '';
+            document.getElementById('short_name').value = res.data.short_name || '';
+            document.getElementById('roles').value = res.data.roles || '';
+            document.getElementById('hero_desc').value = res.data.hero_desc || '';
+            document.getElementById('about_text').value = res.data.about_text || '';
+            document.getElementById('contact_email').value = res.data.email || '';
+            document.getElementById('profile_image').value = res.data.profile_image || '';
         }
+    }
 
-        window.saveProfile = function() {
-            var msg = document.getElementById('save-msg');
-            msg.innerText = 'Menyimpan...';
-            msg.className = 'text-yellow-400 text-sm text-center mt-2';
+    // SAVE PROFILE
+    saveBtn.addEventListener('click', async function() {
+        var msg = document.getElementById('save-msg');
+        msg.innerText = 'Menyimpan...';
+        msg.className = 'text-yellow-400 text-sm text-center mt-2';
 
-            db.from('profile').update({
-                full_name: document.getElementById('full_name').value,
-                short_name: document.getElementById('short_name').value,
-                roles: document.getElementById('roles').value,
-                hero_desc: document.getElementById('hero_desc').value,
-                about_text: document.getElementById('about_text').value,
-                email: document.getElementById('contact_email').value,
-                profile_image: document.getElementById('profile_image').value
-            }).eq('id', 1).then(function(res) {
-                if (res.error) {
-                    msg.innerText = 'Gagal: ' + res.error.message;
-                    msg.className = 'text-red-400 text-sm text-center mt-2';
-                } else {
-                    msg.innerText = 'Profil berhasil disimpan!';
-                    msg.className = 'text-green-400 text-sm text-center mt-2';
-                    setTimeout(function() { msg.innerText = ''; }, 3000);
-                }
-            });
-        };
+        var res = await db.from('profile').update({
+            full_name: document.getElementById('full_name').value,
+            short_name: document.getElementById('short_name').value,
+            roles: document.getElementById('roles').value,
+            hero_desc: document.getElementById('hero_desc').value,
+            about_text: document.getElementById('about_text').value,
+            email: document.getElementById('contact_email').value,
+            profile_image: document.getElementById('profile_image').value
+        }).eq('id', 1);
 
-        checkAuth();
+        if (res.error) {
+            msg.innerText = 'Gagal: ' + res.error.message;
+            msg.className = 'text-red-400 text-sm text-center mt-2';
+        } else {
+            msg.innerText = 'Berhasil disimpan!';
+            msg.className = 'text-green-400 text-sm text-center mt-2';
+            setTimeout(function() { msg.innerText = ''; }, 3000);
+        }
     });
 </script>
 </body>

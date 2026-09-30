@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jonathan Parulian Tobing</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: #a1a1aa; overflow-x: hidden; }
@@ -18,15 +16,15 @@
         .bg-space { position: fixed; inset: 0; background: radial-gradient(circle at top center, #18181b 0%, #050505 80%); z-index: -2; }
         .stars { position: fixed; inset: 0; z-index: -1; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,.8), transparent), radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,.6), transparent), radial-gradient(1px 1px at 90px 40px, #fff, transparent), radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,.9), transparent), radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,.4), transparent); background-repeat: repeat; background-size: 200px 200px; animation: drift 150s linear infinite; opacity: .15; }
         @keyframes drift { to { transform: translateY(-200px); } }
-        .glass { background: rgba(255,255,255,.02); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); }
+        .glass { background: rgba(255,255,255,.02); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); }
         nav.scrolled { background: rgba(5,5,5,.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,.05); }
-        .btn { display: inline-block; padding: 13px 34px; border: 1px solid rgba(255,255,255,.2); border-radius: 100px; color: #fff; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,.02); transition: all .4s ease; }
+        .btn { display: inline-block; padding: 13px 34px; border: 1px solid rgba(255,255,255,.2); border-radius: 100px; color: #fff; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,.02); transition: all .4s ease; text-decoration: none; }
         .btn:hover { background: #fff; color: #050505; box-shadow: 0 0 30px rgba(255,255,255,.12); transform: translateY(-2px); }
-        .btn-ghost { display: inline-block; padding: 13px 34px; border-radius: 100px; color: #71717a; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; transition: all .4s ease; }
+        .btn-ghost { display: inline-block; padding: 13px 34px; border-radius: 100px; color: #71717a; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; transition: all .4s ease; text-decoration: none; }
         .btn-ghost:hover { background: rgba(255,255,255,.05); color: #fff; }
         .proj-img { filter: grayscale(100%) brightness(.8); transition: all .7s ease; }
         .proj-card:hover .proj-img { filter: grayscale(20%) brightness(1); transform: scale(1.04); }
-        .grad-text { background: linear-gradient(to right, #fff, #71717a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-text { background: linear-gradient(to right, #fff, #71717a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     </style>
 </head>
 <body class="selection:bg-white selection:text-black">
@@ -53,9 +51,12 @@
         <h2 class="text-xl md:text-3xl font-light text-zinc-300 mb-9 tracking-wide">
             I'm a <span id="typed" class="font-medium text-white"></span>
         </h2>
-        <p id="hero-desc" class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">I am a college student in informatics engineering since 2023.</p>
+        <p id="hero-desc" class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">
+            I am a college student in informatics engineering since 2023. I have a strong passion for technology and software development.
+        </p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#projects" class="btn">View My Work</a>
+            <a href="https://github.com/Pewcro" target="_blank" class="btn-ghost"><i class="fab fa-github mr-2"></i>GitHub</a>
         </div>
     </div>
 </section>
@@ -70,11 +71,20 @@
         <div class="grid md:grid-cols-12 gap-14 items-center glass p-8 md:p-12 rounded-2xl">
             <div class="md:col-span-7 space-y-5 text-zinc-400 text-base leading-relaxed font-light" id="about-text-container">
                 <p>Hello! My name is Jonathan. I am currently pursuing my degree in Informatics Engineering, starting my journey in 2023.</p>
-                <p>I enjoy building tools, websites, and games.</p>
+                <p>I enjoy building tools, websites, and games, always trying to learn new frameworks and technologies to improve my skills as a developer.</p>
+                <div class="pt-5">
+                    <p class="text-xs tracking-[.1em] text-white uppercase mb-4">Technologies</p>
+                    <ul class="grid grid-cols-2 gap-y-3 text-sm">
+                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>Python</li>
+                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>HTML5</li>
+                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>CSS3</li>
+                        <li class="flex items-center gap-3"><div class="w-1 h-1 bg-white rounded-full flex-shrink-0"></div>Canva Design</li>
+                    </ul>
+                </div>
             </div>
             <div class="md:col-span-5" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
                 <div class="glass rounded-2xl p-2">
-                    <img id="about-img" src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?q=80&w=800&auto=format&fit=crop" alt="Profile" class="w-full rounded-xl object-cover aspect-[4/5]" style="filter: grayscale(30%) contrast(1.1);">
+                    <img id="about-img" src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?q=80&w=800&auto=format&fit=crop" alt="Jonathan" class="w-full rounded-xl object-cover aspect-[4/5]" style="filter: grayscale(30%) contrast(1.1);">
                 </div>
             </div>
         </div>
@@ -89,6 +99,32 @@
             <div class="h-px bg-white/10 flex-grow max-w-xs"></div>
         </div>
         <div id="projects-container" class="grid md:grid-cols-2 gap-10">
+            <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.05">
+                <div class="h-56 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop" alt="Tank Game 2D" class="proj-img w-full h-full object-cover absolute inset-0">
+                    <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
+                        <a href="https://github.com/Pewcro" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="p-7 flex flex-col flex-grow">
+                    <h3 class="text-lg font-medium text-white mb-2 tracking-wide">Tank Game 2D</h3>
+                    <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">A classic 2D tank shooter game built with Python.</p>
+                    <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest"><span>Python</span><span>Game Dev</span></div>
+                </div>
+            </div>
+            <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.05">
+                <div class="h-56 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop" alt="RJB Flix" class="proj-img w-full h-full object-cover absolute inset-0">
+                    <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
+                        <a href="https://github.com/Pewcro" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="p-7 flex flex-col flex-grow">
+                    <h3 class="text-lg font-medium text-white mb-2 tracking-wide">RJB Flix</h3>
+                    <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">An application designed for streaming and watching anime and other entertainment.</p>
+                    <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest"><span>HTML</span><span>CSS</span><span>Streaming</span></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -97,81 +133,23 @@
     <div class="max-w-2xl mx-auto glass p-14 rounded-3xl">
         <p class="text-zinc-500 text-xs tracking-[.2em] uppercase mb-5">03. Contact</p>
         <h2 class="text-4xl md:text-5xl font-light text-white mb-7 tracking-wide">Let's Connect</h2>
-        <a id="contact-email" href="mailto:jonathanptobing@gmail.com" class="btn mt-6">Send an Email</a>
+        <p class="text-zinc-400 text-sm leading-relaxed mb-10 max-w-md mx-auto">
+            Whether it's a collab, freelance gig, or just saying hi — hit me up, I'll reply!
+        </p>
+        <a id="contact-email" href="mailto:jonathanptobing@gmail.com" class="btn">Send an Email</a>
     </div>
 </section>
 
-<!-- Load Supabase dari CDN -->
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<footer class="py-10 border-t border-white/5 text-center text-zinc-600 relative z-10">
+    <div class="flex justify-center gap-7 mb-6">
+        <a href="https://github.com/Pewcro" target="_blank" class="hover:text-white transition-colors text-lg"><i class="fab fa-github"></i></a>
+        <a href="https://instagram.com/jonathannnpt" target="_blank" class="hover:text-white transition-colors text-lg"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p class="text-[10px] tracking-[.2em] uppercase">Built by Jonathan Parulian Tobing</p>
+</footer>
+
 <script>
-    var SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
-    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
-
-    // Inisialisasi Supabase
-    var sb = (typeof supabase !== 'undefined') ? supabase : window.supabase;
-    var db = sb.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    // Load data dari database, kalau gagal tampilkan data default
-    async function loadData() {
-        try {
-            var res = await db.from('profile').select('*').limit(1).single();
-            if (res.data) {
-                var d = res.data;
-                document.title = d.full_name;
-                document.getElementById('nav-logo').innerText = d.short_name + '.';
-                document.getElementById('hero-name').innerText = d.full_name;
-                document.getElementById('hero-desc').innerText = d.hero_desc;
-                document.getElementById('about-text-container').innerHTML = d.about_text.split('|').map(function(p) { return '<p>' + p + '</p>'; }).join('');
-                document.getElementById('about-img').src = d.profile_image;
-                document.getElementById('contact-email').href = 'mailto:' + d.email;
-
-                new Typed('#typed', {
-                    strings: d.roles.split(',').map(function(r) { return r.trim(); }),
-                    typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true
-                });
-            } else {
-                startTyped();
-            }
-        } catch (err) {
-            console.log('Supabase error, using defaults:', err);
-            startTyped();
-        }
-
-        // Load projects
-        try {
-            var projRes = await db.from('projects').select('*').order('id', { ascending: true });
-            if (projRes.data && projRes.data.length > 0) {
-                var container = document.getElementById('projects-container');
-                container.innerHTML = '';
-                projRes.data.forEach(function(p) {
-                    var tagsHtml = p.tags.split(',').map(function(t) { return '<span>' + t.trim() + '</span>'; }).join('');
-                    container.innerHTML += '<div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2">' +
-                        '<div class="h-56 overflow-hidden relative">' +
-                        '<img src="' + p.image + '" class="proj-img w-full h-full object-cover absolute inset-0">' +
-                        '<div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">' +
-                        '<a href="' + p.github_link + '" target="_blank" class="text-white/70 hover:text-white text-2xl"><i class="fab fa-github"></i></a>' +
-                        '</div></div>' +
-                        '<div class="p-7 flex flex-col flex-grow">' +
-                        '<h3 class="text-lg font-medium text-white mb-2">' + p.title + '</h3>' +
-                        '<p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">' + p.description + '</p>' +
-                        '<div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">' + tagsHtml + '</div>' +
-                        '</div></div>';
-                });
-                VanillaTilt.init(document.querySelectorAll('.proj-card'), { max: 2, glare: true, 'max-glare': 0.05 });
-            }
-        } catch (err) {
-            console.log('Projects error:', err);
-        }
-    }
-
-    function startTyped() {
-        new Typed('#typed', {
-            strings: ['Software Engineer', 'College Student', 'Creator'],
-            typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true
-        });
-    }
-
-    // sticky nav
+    // Animasi nav saat scroll
     var nav = document.getElementById('nav');
     window.addEventListener('scroll', function() {
         nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -179,7 +157,38 @@
         nav.classList.toggle('py-6', window.scrollY <= 50);
     });
 
-    loadData();
+    // Typed.js animasi
+    new Typed('#typed', {
+        strings: ['Software Engineer', 'College Student', 'Creator'],
+        typeSpeed: 65,
+        backSpeed: 35,
+        backDelay: 2200,
+        loop: true
+    });
+
+    // Supabase: coba ambil data terbaru dari database (jika ada perubahan via admin)
+    var script = document.createElement('script');
+    script.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+    script.onload = function() {
+        try {
+            var db = window.supabase.createClient(
+                'https://pohngtzslyytrimksoof.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo'
+            );
+            db.from('profile').select('*').limit(1).single().then(function(res) {
+                if (res.data) {
+                    var d = res.data;
+                    document.getElementById('hero-name').innerText = d.full_name;
+                    document.getElementById('hero-desc').innerText = d.hero_desc;
+                    document.getElementById('nav-logo').innerText = d.short_name + '.';
+                    document.getElementById('about-img').src = d.profile_image;
+                    document.getElementById('contact-email').href = 'mailto:' + d.email;
+                    document.title = d.full_name;
+                }
+            });
+        } catch(e) { console.log('Supabase optional:', e); }
+    };
+    document.head.appendChild(script);
 </script>
 </body>
 </html>
