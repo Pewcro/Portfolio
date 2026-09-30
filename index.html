@@ -10,27 +10,21 @@
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: #a1a1aa; overflow-x: hidden; }
         h1,h2,h3,h4 { color: #f4f4f5; }
-
         .bg-space { position: fixed; inset: 0; background: radial-gradient(circle at top center, #18181b 0%, #050505 80%); z-index: -2; }
         .stars { position: fixed; inset: 0; z-index: -1; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,.8), transparent), radial-gradient(1.5px 1.5px at 50px 160px, rgba(255,255,255,.6), transparent), radial-gradient(1px 1px at 90px 40px, #fff, transparent), radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,.9), transparent), radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,.4), transparent); background-repeat: repeat; background-size: 200px 200px; animation: drift 150s linear infinite; opacity: .15; }
         @keyframes drift { to { transform: translateY(-200px); } }
-
         .glass { background: rgba(255,255,255,.02); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); }
         nav.scrolled { background: rgba(5,5,5,.88); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,.05); }
-
         .btn { display: inline-block; padding: 13px 34px; border: 1px solid rgba(255,255,255,.2); border-radius: 100px; color: #fff; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,.02); transition: all .4s ease; }
         .btn:hover { background: #fff; color: #050505; box-shadow: 0 0 30px rgba(255,255,255,.12); transform: translateY(-2px); }
         .btn-ghost { display: inline-block; padding: 13px 34px; border-radius: 100px; color: #71717a; font-size: .75rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; transition: all .4s ease; }
         .btn-ghost:hover { background: rgba(255,255,255,.05); color: #fff; }
-
         .proj-img { filter: grayscale(100%) brightness(.8); transition: all .7s ease; }
         .proj-card:hover .proj-img { filter: grayscale(20%) brightness(1); transform: scale(1.04); }
         .grad-text { background: linear-gradient(to right, #fff, #71717a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -41,10 +35,8 @@
 <div class="bg-space"></div>
 <div class="stars"></div>
 
-<!-- navbar -->
 <nav id="nav" class="fixed w-full z-50 py-6 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <!-- Logo merujuk ke admin.html -->
         <a href="admin.html" id="nav-logo" class="text-xl font-medium tracking-[.2em] uppercase text-white hover:opacity-60 transition-opacity">
             ...
         </a>
@@ -57,7 +49,6 @@
     </div>
 </nav>
 
-<!-- HERO -->
 <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
     <div class="text-center max-w-3xl mx-auto mt-10">
         <p class="text-zinc-400 text-xs tracking-[.3em] uppercase mb-5 font-medium">Portfolio</p>
@@ -72,7 +63,6 @@
     </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="py-32 px-6 relative z-10">
     <div class="max-w-6xl mx-auto">
         <div class="flex items-center gap-5 mb-14">
@@ -82,7 +72,6 @@
         </div>
         <div class="grid md:grid-cols-12 gap-14 items-center glass p-8 md:p-12 rounded-2xl">
             <div class="md:col-span-7 space-y-5 text-zinc-400 text-base leading-relaxed font-light" id="about-text-container">
-                <!-- Text loaded via JS -->
             </div>
             <div class="md:col-span-5" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
                 <div class="glass rounded-2xl p-2">
@@ -93,7 +82,6 @@
     </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects" class="py-32 px-6 relative z-10">
     <div class="max-w-6xl mx-auto">
         <div class="flex items-center gap-5 mb-14">
@@ -102,13 +90,11 @@
             <div class="h-px bg-white/10 flex-grow max-w-xs"></div>
         </div>
         <div id="projects-container" class="grid md:grid-cols-2 gap-10">
-            <!-- Loading projects... -->
             <p class="text-zinc-500">Loading projects...</p>
         </div>
     </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="py-32 px-6 text-center relative z-10">
     <div class="max-w-2xl mx-auto glass p-14 rounded-3xl">
         <p class="text-zinc-500 text-xs tracking-[.2em] uppercase mb-5">03. Contact</p>
@@ -118,23 +104,23 @@
 </section>
 
 <script>
-    // Koneksi ke Supabase
+    // 👇 GANTI TULISAN DI BAWAH INI DENGAN KEY DARI SUPABASE KAMU 👇
     const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_F88EL_oCbR3PKygQZ3SFnA_sIecAT57';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
+    // 👆 ======================================================= 👆
+
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function loadData() {
         try {
-            // Ambil Profil
-            const { data: profileData, error: profileErr } = await supabase.from('profile').select('*').limit(1).single();
+            const { data: profileData } = await supabase.from('profile').select('*').limit(1).single();
             if (profileData) {
                 document.title = profileData.full_name;
                 document.getElementById('nav-logo').innerText = profileData.short_name + '.';
                 document.getElementById('hero-name').innerText = profileData.full_name;
                 document.getElementById('hero-desc').innerText = profileData.hero_desc;
                 
-                const aboutContainer = document.getElementById('about-text-container');
-                aboutContainer.innerHTML = profileData.about_text.split('|').map(p => `<p>${p}</p>`).join('');
+                document.getElementById('about-text-container').innerHTML = profileData.about_text.split('|').map(p => `<p>${p}</p>`).join('');
                 
                 const img = document.getElementById('about-img');
                 img.src = profileData.profile_image;
@@ -142,7 +128,6 @@
 
                 document.getElementById('contact-email').href = 'mailto:' + profileData.email;
 
-                // Animasi teks role
                 const roles = profileData.roles.split(',').map(r => r.trim());
                 new Typed('#typed', {
                     strings: roles,
@@ -150,8 +135,7 @@
                 });
             }
 
-            // Ambil Projects
-            const { data: projectsData, error: projectsErr } = await supabase.from('projects').select('*').order('id', { ascending: true });
+            const { data: projectsData } = await supabase.from('projects').select('*').order('id', { ascending: true });
             if (projectsData) {
                 const container = document.getElementById('projects-container');
                 container.innerHTML = '';
@@ -174,7 +158,6 @@
                         </div>
                     `;
                 });
-                // Re-init vanilla tilt untuk elemen baru
                 VanillaTilt.init(document.querySelectorAll(".proj-card"), { max: 2, glare: true, "max-glare": 0.05 });
             }
         } catch (error) {
@@ -182,7 +165,6 @@
         }
     }
 
-    // sticky nav
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
         nav.classList.toggle('scrolled', window.scrollY > 50);
