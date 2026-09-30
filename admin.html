@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { background: #050505; color: #fff; font-family: sans-serif; }
         .glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); }
@@ -17,9 +16,9 @@
 
 <div id="login-screen" class="max-w-sm mx-auto mt-20 glass p-8 rounded-xl text-center">
     <h2 class="text-2xl font-light mb-6 tracking-widest">ADMIN LOGIN</h2>
-    <input type="email" id="email" placeholder="Email Supabase" class="mb-4">
-    <input type="password" id="password" placeholder="Password Supabase" class="mb-6">
-    <button onclick="login()" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200">Login</button>
+    <input type="email" id="email" placeholder="Email" class="mb-4">
+    <input type="password" id="password" placeholder="Password" class="mb-6" onkeydown="if(event.key==='Enter')login()">
+    <button id="login-btn" onclick="login()" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200">Login</button>
     <p id="login-error" class="text-red-400 text-sm mt-4"></p>
 </div>
 
@@ -31,7 +30,6 @@
             <button onclick="logout()" class="text-sm text-red-400 hover:text-red-300">Logout</button>
         </div>
     </div>
-
     <div class="glass p-8 rounded-xl">
         <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Edit Profil</h3>
         <div class="space-y-4">
@@ -41,86 +39,129 @@
             <div><label>Hero Description</label><textarea id="hero_desc" rows="2"></textarea></div>
             <div><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4"></textarea></div>
             <div><label>Email Kontak</label><input type="email" id="contact_email"></div>
-            <div>
-                <label>URL Foto Profil (Gunakan Link URL)</label>
-                <input type="text" id="profile_image" placeholder="https://...">
-            </div>
-            
+            <div><label>URL Foto Profil</label><input type="text" id="profile_image" placeholder="https://..."></div>
             <button onclick="saveProfile()" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full">Simpan Perubahan</button>
             <p id="save-msg" class="text-green-400 text-sm text-center mt-2"></p>
         </div>
     </div>
 </div>
 
+<!-- Load Supabase dari CDN yang berbeda -->
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+    // Cek apakah library berhasil dimuat
+    if (typeof supabase === 'undefined' && typeof window.supabase === 'undefined') {
+        document.getElementById('login-error').innerText = 'Error: Library Supabase gagal dimuat. Coba refresh halaman.';
+    }
+
     const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Supabase v2 UMD bisa jadi window.supabase atau langsung supabase
+    const sb = (typeof supabase !== 'undefined' ? supabase : window.supabase);
+    const db = sb.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function checkAuth() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-            loadProfile();
-        } else {
-            document.getElementById('login-screen').classList.remove('hidden');
-            document.getElementById('dashboard-screen').classList.add('hidden');
+        try {
+            const { data: { session } } = await db.auth.getSession();
+            if (session) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+                loadProfile();
+            } else {
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('dashboard-screen').classList.add('hidden');
+            }
+        } catch (err) {
+            document.getElementById('login-error').innerText = 'Error koneksi: ' + err.message;
         }
     }
 
     async function login() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        
-        if (error) {
-            document.getElementById('login-error').innerText = error.message;
-        } else {
-            checkAuth();
+        var btn = document.getElementById('login-btn');
+        var errEl = document.getElementById('login-error');
+        btn.innerText = 'Loading...';
+        btn.disabled = true;
+        errEl.innerText = '';
+
+        try {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                errEl.innerText = 'Email dan password harus diisi!';
+                btn.innerText = 'Login';
+                btn.disabled = false;
+                return;
+            }
+
+            var result = await db.auth.signInWithPassword({ email: email, password: password });
+
+            if (result.error) {
+                errEl.innerText = result.error.message;
+                btn.innerText = 'Login';
+                btn.disabled = false;
+            } else {
+                btn.innerText = 'Berhasil!';
+                checkAuth();
+            }
+        } catch (err) {
+            errEl.innerText = 'Error: ' + err.message;
+            btn.innerText = 'Login';
+            btn.disabled = false;
         }
     }
 
     async function logout() {
-        await supabase.auth.signOut();
+        await db.auth.signOut();
         checkAuth();
     }
 
     async function loadProfile() {
-        const { data, error } = await supabase.from('profile').select('*').single();
-        if (data) {
-            document.getElementById('full_name').value = data.full_name;
-            document.getElementById('short_name').value = data.short_name;
-            document.getElementById('roles').value = data.roles;
-            document.getElementById('hero_desc').value = data.hero_desc;
-            document.getElementById('about_text').value = data.about_text;
-            document.getElementById('contact_email').value = data.email;
-            document.getElementById('profile_image').value = data.profile_image;
+        try {
+            var result = await db.from('profile').select('*').single();
+            var d = result.data;
+            if (d) {
+                document.getElementById('full_name').value = d.full_name || '';
+                document.getElementById('short_name').value = d.short_name || '';
+                document.getElementById('roles').value = d.roles || '';
+                document.getElementById('hero_desc').value = d.hero_desc || '';
+                document.getElementById('about_text').value = d.about_text || '';
+                document.getElementById('contact_email').value = d.email || '';
+                document.getElementById('profile_image').value = d.profile_image || '';
+            }
+        } catch (err) {
+            document.getElementById('save-msg').innerText = 'Gagal load profil: ' + err.message;
         }
     }
 
     async function saveProfile() {
-        const full_name = document.getElementById('full_name').value;
-        const short_name = document.getElementById('short_name').value;
-        const roles = document.getElementById('roles').value;
-        const hero_desc = document.getElementById('hero_desc').value;
-        const about_text = document.getElementById('about_text').value;
-        const email = document.getElementById('contact_email').value;
-        const profile_image = document.getElementById('profile_image').value;
+        var msg = document.getElementById('save-msg');
+        msg.innerText = 'Menyimpan...';
+        msg.className = 'text-yellow-400 text-sm text-center mt-2';
 
-        // Asumsi ID selalu 1 (karena cuma ada 1 profil)
-        const { error } = await supabase.from('profile').update({
-            full_name, short_name, roles, hero_desc, about_text, email, profile_image
-        }).eq('id', 1);
+        try {
+            var result = await db.from('profile').update({
+                full_name: document.getElementById('full_name').value,
+                short_name: document.getElementById('short_name').value,
+                roles: document.getElementById('roles').value,
+                hero_desc: document.getElementById('hero_desc').value,
+                about_text: document.getElementById('about_text').value,
+                email: document.getElementById('contact_email').value,
+                profile_image: document.getElementById('profile_image').value
+            }).eq('id', 1);
 
-        const msg = document.getElementById('save-msg');
-        if (error) {
-            msg.innerText = "Gagal menyimpan: " + error.message;
-            msg.className = "text-red-400 text-sm text-center mt-2";
-        } else {
-            msg.innerText = "Profil berhasil disimpan!";
-            msg.className = "text-green-400 text-sm text-center mt-2";
-            setTimeout(() => msg.innerText = "", 3000);
+            if (result.error) {
+                msg.innerText = 'Gagal: ' + result.error.message;
+                msg.className = 'text-red-400 text-sm text-center mt-2';
+            } else {
+                msg.innerText = 'Profil berhasil disimpan!';
+                msg.className = 'text-green-400 text-sm text-center mt-2';
+                setTimeout(function() { msg.innerText = ''; }, 3000);
+            }
+        } catch (err) {
+            msg.innerText = 'Error: ' + err.message;
+            msg.className = 'text-red-400 text-sm text-center mt-2';
         }
     }
 

@@ -10,7 +10,6 @@
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         * { box-sizing: border-box; }
@@ -37,9 +36,7 @@
 
 <nav id="nav" class="fixed w-full z-50 py-6 transition-all duration-300">
     <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <a href="admin.html" id="nav-logo" class="text-xl font-medium tracking-[.2em] uppercase text-white hover:opacity-60 transition-opacity">
-            ...
-        </a>
+        <a href="admin.html" id="nav-logo" class="text-xl font-medium tracking-[.2em] uppercase text-white hover:opacity-60 transition-opacity">JONATHAN.</a>
         <div class="hidden md:flex gap-9 text-xs font-medium tracking-[.15em] uppercase">
             <a href="#home" class="text-white hover:opacity-60 transition-opacity">Home</a>
             <a href="#about" class="text-zinc-400 hover:text-white transition-colors">About</a>
@@ -52,11 +49,11 @@
 <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
     <div class="text-center max-w-3xl mx-auto mt-10">
         <p class="text-zinc-400 text-xs tracking-[.3em] uppercase mb-5 font-medium">Portfolio</p>
-        <h1 id="hero-name" class="text-5xl md:text-7xl font-light grad-text mb-5 tracking-tight">Loading...</h1>
+        <h1 id="hero-name" class="text-5xl md:text-7xl font-light grad-text mb-5 tracking-tight">Jonathan Parulian Tobing</h1>
         <h2 class="text-xl md:text-3xl font-light text-zinc-300 mb-9 tracking-wide">
             I'm a <span id="typed" class="font-medium text-white"></span>
         </h2>
-        <p id="hero-desc" class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">...</p>
+        <p id="hero-desc" class="text-sm md:text-base text-zinc-400 mb-12 max-w-xl mx-auto leading-relaxed">I am a college student in informatics engineering since 2023.</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="#projects" class="btn">View My Work</a>
         </div>
@@ -72,10 +69,12 @@
         </div>
         <div class="grid md:grid-cols-12 gap-14 items-center glass p-8 md:p-12 rounded-2xl">
             <div class="md:col-span-7 space-y-5 text-zinc-400 text-base leading-relaxed font-light" id="about-text-container">
+                <p>Hello! My name is Jonathan. I am currently pursuing my degree in Informatics Engineering, starting my journey in 2023.</p>
+                <p>I enjoy building tools, websites, and games.</p>
             </div>
             <div class="md:col-span-5" data-tilt data-tilt-max="3" data-tilt-glare data-tilt-max-glare="0.1">
                 <div class="glass rounded-2xl p-2">
-                    <img id="about-img" src="" alt="Profile" class="w-full rounded-xl object-cover aspect-[4/5]" style="filter: grayscale(30%) contrast(1.1); display: none;">
+                    <img id="about-img" src="https://images.unsplash.com/photo-1510915228340-29c85a43dcfe?q=80&w=800&auto=format&fit=crop" alt="Profile" class="w-full rounded-xl object-cover aspect-[4/5]" style="filter: grayscale(30%) contrast(1.1);">
                 </div>
             </div>
         </div>
@@ -90,7 +89,6 @@
             <div class="h-px bg-white/10 flex-grow max-w-xs"></div>
         </div>
         <div id="projects-container" class="grid md:grid-cols-2 gap-10">
-            <p class="text-zinc-500">Loading projects...</p>
         </div>
     </div>
 </section>
@@ -99,74 +97,83 @@
     <div class="max-w-2xl mx-auto glass p-14 rounded-3xl">
         <p class="text-zinc-500 text-xs tracking-[.2em] uppercase mb-5">03. Contact</p>
         <h2 class="text-4xl md:text-5xl font-light text-white mb-7 tracking-wide">Let's Connect</h2>
-        <a id="contact-email" href="#" class="btn mt-6">Send an Email</a>
+        <a id="contact-email" href="mailto:jonathanptobing@gmail.com" class="btn mt-6">Send an Email</a>
     </div>
 </section>
 
+<!-- Load Supabase dari CDN -->
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-    // 👇 GANTI TULISAN DI BAWAH INI DENGAN KEY DARI SUPABASE KAMU 👇
-    const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
-    // 👆 ======================================================= 👆
+    var SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Inisialisasi Supabase
+    var sb = (typeof supabase !== 'undefined') ? supabase : window.supabase;
+    var db = sb.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // Load data dari database, kalau gagal tampilkan data default
     async function loadData() {
         try {
-            const { data: profileData } = await supabase.from('profile').select('*').limit(1).single();
-            if (profileData) {
-                document.title = profileData.full_name;
-                document.getElementById('nav-logo').innerText = profileData.short_name + '.';
-                document.getElementById('hero-name').innerText = profileData.full_name;
-                document.getElementById('hero-desc').innerText = profileData.hero_desc;
-                
-                document.getElementById('about-text-container').innerHTML = profileData.about_text.split('|').map(p => `<p>${p}</p>`).join('');
-                
-                const img = document.getElementById('about-img');
-                img.src = profileData.profile_image;
-                img.style.display = 'block';
+            var res = await db.from('profile').select('*').limit(1).single();
+            if (res.data) {
+                var d = res.data;
+                document.title = d.full_name;
+                document.getElementById('nav-logo').innerText = d.short_name + '.';
+                document.getElementById('hero-name').innerText = d.full_name;
+                document.getElementById('hero-desc').innerText = d.hero_desc;
+                document.getElementById('about-text-container').innerHTML = d.about_text.split('|').map(function(p) { return '<p>' + p + '</p>'; }).join('');
+                document.getElementById('about-img').src = d.profile_image;
+                document.getElementById('contact-email').href = 'mailto:' + d.email;
 
-                document.getElementById('contact-email').href = 'mailto:' + profileData.email;
-
-                const roles = profileData.roles.split(',').map(r => r.trim());
                 new Typed('#typed', {
-                    strings: roles,
-                    typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true,
+                    strings: d.roles.split(',').map(function(r) { return r.trim(); }),
+                    typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true
                 });
+            } else {
+                startTyped();
             }
+        } catch (err) {
+            console.log('Supabase error, using defaults:', err);
+            startTyped();
+        }
 
-            const { data: projectsData } = await supabase.from('projects').select('*').order('id', { ascending: true });
-            if (projectsData) {
-                const container = document.getElementById('projects-container');
+        // Load projects
+        try {
+            var projRes = await db.from('projects').select('*').order('id', { ascending: true });
+            if (projRes.data && projRes.data.length > 0) {
+                var container = document.getElementById('projects-container');
                 container.innerHTML = '';
-                projectsData.forEach(p => {
-                    const tagsHtml = p.tags.split(',').map(t => `<span>${t.trim()}</span>`).join('');
-                    container.innerHTML += `
-                        <div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2">
-                            <div class="h-56 overflow-hidden relative">
-                                <div class="absolute inset-0 bg-black/20 z-10 hover:bg-transparent transition-all"></div>
-                                <img src="${p.image}" class="proj-img w-full h-full object-cover absolute inset-0">
-                                <div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
-                                    <a href="${p.github_link}" target="_blank" class="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1"><i class="fab fa-github"></i></a>
-                                </div>
-                            </div>
-                            <div class="p-7 flex flex-col flex-grow">
-                                <h3 class="text-lg font-medium text-white mb-2 tracking-wide">${p.title}</h3>
-                                <p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">${p.description}</p>
-                                <div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">${tagsHtml}</div>
-                            </div>
-                        </div>
-                    `;
+                projRes.data.forEach(function(p) {
+                    var tagsHtml = p.tags.split(',').map(function(t) { return '<span>' + t.trim() + '</span>'; }).join('');
+                    container.innerHTML += '<div class="proj-card glass rounded-2xl overflow-hidden flex flex-col" data-tilt data-tilt-max="2">' +
+                        '<div class="h-56 overflow-hidden relative">' +
+                        '<img src="' + p.image + '" class="proj-img w-full h-full object-cover absolute inset-0">' +
+                        '<div class="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">' +
+                        '<a href="' + p.github_link + '" target="_blank" class="text-white/70 hover:text-white text-2xl"><i class="fab fa-github"></i></a>' +
+                        '</div></div>' +
+                        '<div class="p-7 flex flex-col flex-grow">' +
+                        '<h3 class="text-lg font-medium text-white mb-2">' + p.title + '</h3>' +
+                        '<p class="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">' + p.description + '</p>' +
+                        '<div class="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">' + tagsHtml + '</div>' +
+                        '</div></div>';
                 });
-                VanillaTilt.init(document.querySelectorAll(".proj-card"), { max: 2, glare: true, "max-glare": 0.05 });
+                VanillaTilt.init(document.querySelectorAll('.proj-card'), { max: 2, glare: true, 'max-glare': 0.05 });
             }
-        } catch (error) {
-            console.error("Error loading data:", error);
+        } catch (err) {
+            console.log('Projects error:', err);
         }
     }
 
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
+    function startTyped() {
+        new Typed('#typed', {
+            strings: ['Software Engineer', 'College Student', 'Creator'],
+            typeSpeed: 65, backSpeed: 35, backDelay: 2200, loop: true
+        });
+    }
+
+    // sticky nav
+    var nav = document.getElementById('nav');
+    window.addEventListener('scroll', function() {
         nav.classList.toggle('scrolled', window.scrollY > 50);
         nav.classList.toggle('py-4', window.scrollY > 50);
         nav.classList.toggle('py-6', window.scrollY <= 50);
