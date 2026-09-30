@@ -46,102 +46,75 @@
     </div>
 </div>
 
-<!-- Load Supabase dari CDN yang berbeda -->
 <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-    // Cek apakah library berhasil dimuat
-    if (typeof supabase === 'undefined' && typeof window.supabase === 'undefined') {
-        document.getElementById('login-error').innerText = 'Error: Library Supabase gagal dimuat. Coba refresh halaman.';
-    }
+    window.addEventListener('DOMContentLoaded', function() {
+        var SUPA_URL = 'https://pohngtzslyytrimksoof.supabase.co';
+        var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
+        var db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
-    const SUPABASE_URL = 'https://pohngtzslyytrimksoof.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvaG5ndHpzbHl5dHJpbWtzb29mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDQ4MDEsImV4cCI6MjEwNjMyMDgwMX0.BHp-wF4qsj0qBXIQ2VwpEKK4XwJzbT4_LUKZTAgzUGo';
-
-    // Supabase v2 UMD bisa jadi window.supabase atau langsung supabase
-    const sb = (typeof supabase !== 'undefined' ? supabase : window.supabase);
-    const db = sb.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    async function checkAuth() {
-        try {
-            const { data: { session } } = await db.auth.getSession();
-            if (session) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('dashboard-screen').classList.remove('hidden');
-                loadProfile();
-            } else {
-                document.getElementById('login-screen').classList.remove('hidden');
-                document.getElementById('dashboard-screen').classList.add('hidden');
-            }
-        } catch (err) {
-            document.getElementById('login-error').innerText = 'Error koneksi: ' + err.message;
+        function checkAuth() {
+            db.auth.getSession().then(function(res) {
+                if (res.data.session) {
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('dashboard-screen').classList.remove('hidden');
+                    loadProfile();
+                } else {
+                    document.getElementById('login-screen').classList.remove('hidden');
+                    document.getElementById('dashboard-screen').classList.add('hidden');
+                }
+            });
         }
-    }
 
-    async function login() {
-        var btn = document.getElementById('login-btn');
-        var errEl = document.getElementById('login-error');
-        btn.innerText = 'Loading...';
-        btn.disabled = true;
-        errEl.innerText = '';
-
-        try {
+        window.login = function() {
+            var btn = document.getElementById('login-btn');
+            var errEl = document.getElementById('login-error');
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
 
-            if (!email || !password) {
-                errEl.innerText = 'Email dan password harus diisi!';
-                btn.innerText = 'Login';
-                btn.disabled = false;
-                return;
-            }
+            if (!email || !password) { errEl.innerText = 'Email dan password harus diisi!'; return; }
 
-            var result = await db.auth.signInWithPassword({ email: email, password: password });
+            btn.innerText = 'Loading...';
+            btn.disabled = true;
+            errEl.innerText = '';
 
-            if (result.error) {
-                errEl.innerText = result.error.message;
-                btn.innerText = 'Login';
-                btn.disabled = false;
-            } else {
-                btn.innerText = 'Berhasil!';
-                checkAuth();
-            }
-        } catch (err) {
-            errEl.innerText = 'Error: ' + err.message;
-            btn.innerText = 'Login';
-            btn.disabled = false;
+            db.auth.signInWithPassword({ email: email, password: password }).then(function(res) {
+                if (res.error) {
+                    errEl.innerText = res.error.message;
+                    btn.innerText = 'Login';
+                    btn.disabled = false;
+                } else {
+                    btn.innerText = 'Berhasil!';
+                    checkAuth();
+                }
+            });
+        };
+
+        window.logout = function() {
+            db.auth.signOut().then(function() { checkAuth(); });
+        };
+
+        function loadProfile() {
+            db.from('profile').select('*').single().then(function(res) {
+                var d = res.data;
+                if (d) {
+                    document.getElementById('full_name').value = d.full_name || '';
+                    document.getElementById('short_name').value = d.short_name || '';
+                    document.getElementById('roles').value = d.roles || '';
+                    document.getElementById('hero_desc').value = d.hero_desc || '';
+                    document.getElementById('about_text').value = d.about_text || '';
+                    document.getElementById('contact_email').value = d.email || '';
+                    document.getElementById('profile_image').value = d.profile_image || '';
+                }
+            });
         }
-    }
 
-    async function logout() {
-        await db.auth.signOut();
-        checkAuth();
-    }
+        window.saveProfile = function() {
+            var msg = document.getElementById('save-msg');
+            msg.innerText = 'Menyimpan...';
+            msg.className = 'text-yellow-400 text-sm text-center mt-2';
 
-    async function loadProfile() {
-        try {
-            var result = await db.from('profile').select('*').single();
-            var d = result.data;
-            if (d) {
-                document.getElementById('full_name').value = d.full_name || '';
-                document.getElementById('short_name').value = d.short_name || '';
-                document.getElementById('roles').value = d.roles || '';
-                document.getElementById('hero_desc').value = d.hero_desc || '';
-                document.getElementById('about_text').value = d.about_text || '';
-                document.getElementById('contact_email').value = d.email || '';
-                document.getElementById('profile_image').value = d.profile_image || '';
-            }
-        } catch (err) {
-            document.getElementById('save-msg').innerText = 'Gagal load profil: ' + err.message;
-        }
-    }
-
-    async function saveProfile() {
-        var msg = document.getElementById('save-msg');
-        msg.innerText = 'Menyimpan...';
-        msg.className = 'text-yellow-400 text-sm text-center mt-2';
-
-        try {
-            var result = await db.from('profile').update({
+            db.from('profile').update({
                 full_name: document.getElementById('full_name').value,
                 short_name: document.getElementById('short_name').value,
                 roles: document.getElementById('roles').value,
@@ -149,23 +122,20 @@
                 about_text: document.getElementById('about_text').value,
                 email: document.getElementById('contact_email').value,
                 profile_image: document.getElementById('profile_image').value
-            }).eq('id', 1);
+            }).eq('id', 1).then(function(res) {
+                if (res.error) {
+                    msg.innerText = 'Gagal: ' + res.error.message;
+                    msg.className = 'text-red-400 text-sm text-center mt-2';
+                } else {
+                    msg.innerText = 'Profil berhasil disimpan!';
+                    msg.className = 'text-green-400 text-sm text-center mt-2';
+                    setTimeout(function() { msg.innerText = ''; }, 3000);
+                }
+            });
+        };
 
-            if (result.error) {
-                msg.innerText = 'Gagal: ' + result.error.message;
-                msg.className = 'text-red-400 text-sm text-center mt-2';
-            } else {
-                msg.innerText = 'Profil berhasil disimpan!';
-                msg.className = 'text-green-400 text-sm text-center mt-2';
-                setTimeout(function() { msg.innerText = ''; }, 3000);
-            }
-        } catch (err) {
-            msg.innerText = 'Error: ' + err.message;
-            msg.className = 'text-red-400 text-sm text-center mt-2';
-        }
-    }
-
-    checkAuth();
+        checkAuth();
+    });
 </script>
 </body>
 </html>
