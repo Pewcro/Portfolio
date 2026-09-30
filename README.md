@@ -1,31 +1,36 @@
-# Portfolio Website — Jonathan Parulian Tobing
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A dynamic, elegant, and modern tech-themed portfolio website powered by Supabase.
+## Getting Started
 
-This version is built using **HTML/CSS/JS** with a **Serverless Backend (Supabase)**, optimized for deployment on platforms like **Vercel** while retaining dynamic data management capabilities.
+First, run the development server:
 
-## ✨ Features
-- **Modern Cyberpunk/Tech Grid Theme** with a subtle glowing aurora background
-- **Integrated Admin Dashboard** (`/admin.html`) to manage the website without touching code
-- **Dynamic Content Management** for Projects, Skills, Social Links, and Profile
-- **Image Upload Integration** directly to Supabase Storage
-- **Glassmorphism UI** with smooth 3D tilt effects on project cards
-- Fully responsive (mobile-friendly)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## 🚀 How to Manage Content
-Unlike a purely static site, this portfolio uses a database!
-1. Go to your live website and add `/admin.html` to the URL.
-2. Log in using your secure credentials.
-3. Manage your **Profile**, upload new cover images, add **Projects**, update **Skills**, and change **Social Links** instantly.
-4. Click "Save", and your homepage updates automatically.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🌐 Deploy to Vercel
-1. Upload this folder to your GitHub repository.
-2. Go to [Vercel.com](https://vercel.com/) and log in with GitHub.
-3. Click **"Add New Project"** and import your portfolio repository.
-4. Click **Deploy**. That's it! Vercel will automatically host your frontend, connecting seamlessly to your Supabase backend.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 🛠️ Tech Stack
-- **Frontend:** HTML5, Tailwind CSS, Vanilla JavaScript
-- **Backend & Database:** Supabase (PostgreSQL, Auth, Storage)
-- **Libraries:** Typed.js, Vanilla-Tilt.js, FontAwesome
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

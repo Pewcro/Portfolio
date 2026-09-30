@@ -1,13 +1,18 @@
-/* =========================================
-   BASE STYLES & RESET
-========================================= */
-* { box-sizing: border-box; }
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    background: #050505; 
-    color: #a1a1aa; 
-    overflow-x: hidden; 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #050505;
+  --foreground: #a1a1aa;
 }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
 h1, h2, h3, h4 { color: #f4f4f5; }
 
 /* =========================================
@@ -49,16 +54,16 @@ h1, h2, h3, h4 { color: #f4f4f5; }
     box-shadow: 0 25px 50px -12px rgba(0,0,0,.5); 
 }
 
-nav.scrolled { 
-    background: rgba(5,5,5,.88); 
-    backdrop-filter: blur(20px); 
-    border-bottom: 1px solid rgba(255,255,255,.05); 
-}
-
 .grad-text { 
     background: linear-gradient(to right, #fff, #71717a); 
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
+}
+
+nav.scrolled { 
+    background: rgba(5,5,5,.88); 
+    backdrop-filter: blur(20px); 
+    border-bottom: 1px solid rgba(255,255,255,.05); 
 }
 
 /* =========================================
@@ -76,7 +81,8 @@ nav.scrolled {
     text-transform: uppercase; 
     background: rgba(255,255,255,.02); 
     transition: all .4s ease; 
-    text-decoration: none; 
+    text-decoration: none;
+    cursor: pointer;
 }
 .btn:hover { 
     background: #fff; 
@@ -126,7 +132,7 @@ nav.scrolled {
 /* =========================================
    ADMIN DASHBOARD FORMS & TABS
 ========================================= */
-input, textarea { 
+input, textarea, select { 
     background: rgba(0,0,0,0.3); 
     border: 1px solid rgba(255,255,255,0.1); 
     color: white; 
@@ -175,8 +181,9 @@ label {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
 }
 
-.tab-content { display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+.animate-fadeIn {
+    animation: fadeIn 0.4s ease;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
