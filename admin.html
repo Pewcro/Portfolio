@@ -16,89 +16,107 @@
     <input type="password" id="password" placeholder="Password" class="mb-6">
     <button id="login-btn" class="w-full bg-white text-black py-3 rounded font-bold uppercase tracking-widest hover:bg-gray-200 cursor-pointer">Login</button>
     <p id="login-error" class="text-red-400 text-sm mt-4"></p>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<div id="login-screen" class="min-h-screen flex items-center justify-center relative z-10 px-4">
+    <div class="glass p-10 rounded-3xl w-full max-w-md relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-sky-500"></div>
+        <h2 class="text-3xl font-light mb-2 text-white">Welcome Back</h2>
+        <p class="text-zinc-400 mb-8 text-sm">Sign in to manage your portfolio</p>
+        
+        <input type="email" id="email" placeholder="Email address" class="mb-4">
+        <input type="password" id="password" placeholder="Password" class="mb-8">
+        
+        <button id="login-btn" class="w-full bg-white text-black py-3 rounded-xl font-bold uppercase tracking-widest hover:bg-gray-200 cursor-pointer transition-colors">Login to Dashboard</button>
+        <p id="login-error" class="text-red-400 text-sm mt-4 text-center"></p>
+    </div>
 </div>
 
-<div id="dashboard-screen" class="max-w-4xl mx-auto" style="display:none;">
-    <div class="flex justify-between items-center mb-10">
-        <h2 class="text-3xl font-light tracking-wide">Dashboard</h2>
-        <div class="space-x-4">
-            <a href="index.html" class="text-sm text-gray-400 hover:text-white">Lihat Website</a>
-            <button id="logout-btn" class="text-sm text-red-400 hover:text-red-300">Logout</button>
+<div id="dashboard-screen" class="max-w-5xl mx-auto py-12 px-6 relative z-10" style="display:none;">
+    <header class="glass rounded-2xl p-6 flex flex-col md:flex-row justify-between items-center mb-8">
+        <h2 class="text-2xl font-light text-white tracking-widest uppercase">Admin <span class="font-bold grad-text">Panel</span></h2>
+        <div class="flex gap-4 mt-4 md:mt-0">
+            <a href="index.html" class="btn-ghost text-xs">Lihat Website</a>
+            <button id="logout-btn" class="btn text-xs !bg-red-500/10 !text-red-400 !border-red-500/30 hover:!bg-red-500 hover:!text-white">Logout</button>
         </div>
-    </div>
+    </header>
 
-    <!-- Tabs -->
-    <div class="flex gap-4 border-b border-white/10 mb-8">
-        <div class="tab-btn active" data-target="tab-profile">Profil</div>
-        <div class="tab-btn" data-target="tab-projects">Projects</div>
-        <div class="tab-btn" data-target="tab-skills">Skills</div>
-        <div class="tab-btn" data-target="tab-socials">Social Links</div>
+    <!-- Tabs Container -->
+    <div class="flex overflow-x-auto gap-2 p-2 glass rounded-xl mb-8 w-max max-w-full">
+        <button class="tab-btn active flex items-center" data-target="tab-profile">Profil</button>
+        <button class="tab-btn flex items-center" data-target="tab-projects">Projects</button>
+        <button class="tab-btn flex items-center" data-target="tab-skills">Skills</button>
+        <button class="tab-btn flex items-center" data-target="tab-socials">Social Links</button>
     </div>
 
     <!-- TAB: PROFIL -->
-    <div id="tab-profile" class="tab-content active glass p-8 rounded-xl">
-        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Edit Profil Utama</h3>
-        <div class="space-y-4">
-            <div><label>Nama Lengkap</label><input type="text" id="full_name"></div>
-            <div><label>Nama Singkat (Logo)</label><input type="text" id="short_name"></div>
-            <div><label>Roles (Pisahkan dengan koma)</label><input type="text" id="roles"></div>
-            <div><label>Hero Description</label><textarea id="hero_desc" rows="2"></textarea></div>
-            <div><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4"></textarea></div>
-            <div><label>Email Kontak</label><input type="email" id="contact_email"></div>
+    <div id="tab-profile" class="tab-content active glass p-8 rounded-3xl">
+        <h3 class="text-xl font-light mb-6 text-white">Edit Profil Utama</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div><label>Nama Lengkap</label><input type="text" id="full_name" placeholder="John Doe"></div>
+            <div><label>Nama Singkat (Logo)</label><input type="text" id="short_name" placeholder="John"></div>
+            <div class="md:col-span-2"><label>Roles (Pisahkan dengan koma)</label><input type="text" id="roles" placeholder="Web Developer, UI Designer"></div>
+            <div class="md:col-span-2"><label>Hero Description</label><textarea id="hero_desc" rows="2" placeholder="Brief description below your roles"></textarea></div>
+            <div class="md:col-span-2"><label>About Text (Gunakan | untuk paragraf baru)</label><textarea id="about_text" rows="4" placeholder="Your long biography..."></textarea></div>
+            <div><label>Email Kontak</label><input type="email" id="contact_email" placeholder="hello@example.com"></div>
             <div>
                 <label>Foto Profil (Upload File)</label>
-                <input type="file" id="profile_image_file" accept="image/*">
+                <input type="file" id="profile_image_file" accept="image/*" class="text-sm">
                 <input type="hidden" id="profile_image">
-                <img id="profile_image_preview" src="" class="mt-2 h-20 w-20 object-cover rounded hidden">
+                <img id="profile_image_preview" src="" class="mt-4 h-24 w-24 object-cover rounded-xl border border-white/10 hidden">
             </div>
-            <button id="save-profile-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-4 hover:bg-blue-500 w-full cursor-pointer">Simpan Profil</button>
-            <p id="save-msg" class="text-green-400 text-sm text-center mt-2"></p>
+            <div class="md:col-span-2 mt-4">
+                <button id="save-profile-btn" class="btn w-full !bg-indigo-600 !border-indigo-500 hover:!bg-indigo-500">Simpan Profil</button>
+                <p id="save-msg" class="text-green-400 text-sm text-center mt-3"></p>
+            </div>
         </div>
     </div>
 
     <!-- TAB: PROJECTS -->
-    <div id="tab-projects" class="tab-content glass p-8 rounded-xl">
-        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Projects</h3>
+    <div id="tab-projects" class="tab-content glass p-8 rounded-3xl">
+        <h3 class="text-xl font-light mb-6 text-white">Manajemen Projects</h3>
         
-        <div class="mb-8 p-4 border border-white/20 rounded-lg bg-white/5">
-            <h4 class="text-lg mb-4 text-zinc-300">Tambah Project Baru</h4>
-            <div class="space-y-3">
-                <input type="text" id="new_proj_title" placeholder="Judul Project">
-                <textarea id="new_proj_desc" placeholder="Deskripsi" rows="2"></textarea>
-                <input type="text" id="new_proj_tags" placeholder="Tags (pisahkan koma, misal: Python, Game)">
-                <input type="text" id="new_proj_github" placeholder="Link GitHub">
-                <div>
+        <div class="mb-10 p-6 rounded-2xl bg-black/20 border border-white/5">
+            <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-widest mb-4">Tambah Project Baru</h4>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div><label>Judul Project</label><input type="text" id="new_proj_title" placeholder="Nama aplikasi..."></div>
+                <div><label>Link GitHub</label><input type="text" id="new_proj_github" placeholder="https://github.com/..."></div>
+                <div class="md:col-span-2"><label>Tags (Pisahkan koma)</label><input type="text" id="new_proj_tags" placeholder="React, Tailwind, Node.js"></div>
+                <div class="md:col-span-2"><label>Deskripsi</label><textarea id="new_proj_desc" rows="2"></textarea></div>
+                <div class="md:col-span-2">
                     <label>Gambar Project</label>
-                    <input type="file" id="new_proj_image" accept="image/*">
+                    <input type="file" id="new_proj_image" accept="image/*" class="text-sm">
                 </div>
-                <button id="add-proj-btn" class="bg-green-600 px-4 py-2 rounded text-sm font-bold w-full">Tambah Project</button>
-                <p id="proj-msg" class="text-sm mt-2"></p>
+                <div class="md:col-span-2 mt-4">
+                    <button id="add-proj-btn" class="btn w-full !bg-green-600/20 !text-green-400 !border-green-500/30 hover:!bg-green-600 hover:!text-white">Tambah Project</button>
+                    <p id="proj-msg" class="text-sm mt-3 text-center"></p>
+                </div>
             </div>
         </div>
 
-        <h4 class="text-lg mb-4 text-zinc-300">Daftar Project</h4>
-        <div id="projects-list" class="space-y-4"></div>
+        <h4 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Daftar Project</h4>
+        <div id="projects-list" class="grid gap-4"></div>
     </div>
 
     <!-- TAB: SKILLS -->
-    <div id="tab-skills" class="tab-content glass p-8 rounded-xl">
-        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Skills</h3>
-        <div class="flex gap-2 mb-6">
-            <input type="text" id="new_skill_name" placeholder="Nama Skill (misal: React JS)">
-            <button id="add-skill-btn" class="bg-green-600 px-6 py-2 rounded font-bold">Tambah</button>
+    <div id="tab-skills" class="tab-content glass p-8 rounded-3xl">
+        <h3 class="text-xl font-light mb-6 text-white">Manajemen Skills</h3>
+        <div class="flex flex-col md:flex-row gap-4 mb-8 items-end">
+            <div class="flex-grow w-full"><label>Nama Skill</label><input type="text" id="new_skill_name" placeholder="misal: React JS"></div>
+            <button id="add-skill-btn" class="btn h-fit !py-3 whitespace-nowrap !bg-green-600/20 !text-green-400 !border-green-500/30 hover:!bg-green-600 hover:!text-white">Tambah Skill</button>
         </div>
-        <p id="skill-msg" class="text-sm mt-2 mb-4"></p>
-        <ul id="skills-list" class="space-y-2"></ul>
+        <p id="skill-msg" class="text-sm mt-2 mb-6 text-center"></p>
+        <ul id="skills-list" class="grid md:grid-cols-2 gap-3"></ul>
     </div>
 
     <!-- TAB: SOCIALS -->
-    <div id="tab-socials" class="tab-content glass p-8 rounded-xl">
-        <h3 class="text-xl mb-6 border-b border-white/10 pb-2">Manajemen Social Links</h3>
-        <div id="socials-list" class="space-y-4"></div>
-        <button id="save-socials-btn" class="bg-blue-600 text-white px-6 py-2 rounded mt-6 hover:bg-blue-500 w-full cursor-pointer">Simpan Social Links</button>
-        <p id="social-msg" class="text-sm text-center mt-2"></p>
+    <div id="tab-socials" class="tab-content glass p-8 rounded-3xl">
+        <h3 class="text-xl font-light mb-6 text-white">Manajemen Social Links</h3>
+        <div id="socials-list" class="space-y-4 mb-8"></div>
+        <button id="save-socials-btn" class="btn w-full !bg-indigo-600 !border-indigo-500 hover:!bg-indigo-500">Simpan Social Links</button>
+        <p id="social-msg" class="text-sm text-center mt-4"></p>
     </div>
-
 </div>
 
 <script type="module">
@@ -232,23 +250,24 @@
     // --- PROJECTS ---
     async function loadProjects() {
         const list = document.getElementById('projects-list');
-        list.innerHTML = 'Loading...';
+        list.innerHTML = '<div class="text-zinc-400 text-sm">Loading projects...</div>';
         const { data } = await db.from('projects').select('*').order('id', {ascending: true});
         list.innerHTML = '';
         
-        if(data) {
+        if(data && data.length > 0) {
             data.forEach(p => {
                 const div = document.createElement('div');
-                div.className = 'flex justify-between items-center bg-white/10 p-4 rounded';
+                div.className = 'flex flex-col sm:flex-row justify-between sm:items-center bg-white/5 border border-white/10 p-5 rounded-2xl gap-4';
                 div.innerHTML = `
-                    <div class="flex gap-4 items-center">
-                        <img src="${p.image}" class="w-16 h-16 object-cover rounded">
+                    <div class="flex gap-5 items-center">
+                        <img src="${p.image}" class="w-20 h-20 object-cover rounded-xl shadow-lg border border-white/10">
                         <div>
-                            <h5 class="font-bold">${p.title}</h5>
-                            <p class="text-xs text-zinc-400">${p.tags}</p>
+                            <h5 class="font-bold text-white text-lg">${p.title}</h5>
+                            <p class="text-xs text-indigo-300 uppercase tracking-widest mt-1">${p.tags}</p>
+                            <a href="${p.github_link}" target="_blank" class="text-xs text-zinc-400 hover:text-white mt-2 inline-block">🔗 GitHub</a>
                         </div>
                     </div>
-                    <button class="del-proj-btn bg-red-600 px-3 py-1 rounded text-xs" data-id="${p.id}">Hapus</button>
+                    <button class="del-proj-btn btn !bg-red-500/10 !text-red-400 !border-red-500/30 hover:!bg-red-500 hover:!text-white whitespace-nowrap" data-id="${p.id}">Hapus</button>
                 `;
                 list.appendChild(div);
             });
@@ -262,6 +281,8 @@
                     }
                 });
             });
+        } else {
+            list.innerHTML = '<div class="text-zinc-500 text-sm">Belum ada project.</div>';
         }
     }
 
@@ -273,9 +294,9 @@
         const github = document.getElementById('new_proj_github').value;
         const fileInput = document.getElementById('new_proj_image');
         
-        if(!title) { msg.innerText = "Judul wajib diisi!"; msg.className="text-red-400"; return; }
+        if(!title) { msg.innerText = "Judul wajib diisi!"; msg.className="text-red-400 text-sm mt-3 text-center"; return; }
         
-        msg.innerText = 'Mengupload dan menyimpan...'; msg.className="text-yellow-400";
+        msg.innerText = 'Mengupload dan menyimpan...'; msg.className="text-yellow-400 text-sm mt-3 text-center";
         try {
             let imgUrl = 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop'; // default
             if(fileInput.files.length > 0) {
@@ -287,7 +308,7 @@
             }]);
 
             if(error) throw error;
-            msg.innerText = 'Project ditambahkan!'; msg.className="text-green-400";
+            msg.innerText = 'Project ditambahkan!'; msg.className="text-green-400 text-sm mt-3 text-center";
             
             // reset form
             document.getElementById('new_proj_title').value = '';
@@ -298,7 +319,7 @@
             
             loadProjects();
         } catch(err) {
-            msg.innerText = 'Gagal: ' + err.message; msg.className="text-red-400";
+            msg.innerText = 'Gagal: ' + err.message; msg.className="text-red-400 text-sm mt-3 text-center";
         }
         setTimeout(() => msg.innerText = '', 3000);
     });
@@ -306,15 +327,15 @@
     // --- SKILLS ---
     async function loadSkills() {
         const list = document.getElementById('skills-list');
-        list.innerHTML = 'Loading...';
+        list.innerHTML = '<div class="text-zinc-400 text-sm col-span-2">Loading skills...</div>';
         const { data } = await db.from('skills').select('*').order('id');
         list.innerHTML = '';
         
-        if(data) {
+        if(data && data.length > 0) {
             data.forEach(s => {
                 const li = document.createElement('li');
-                li.className = 'flex justify-between bg-white/10 px-4 py-2 rounded';
-                li.innerHTML = `<span>${s.skill_name}</span> <button class="del-skill-btn text-red-400 hover:text-red-300" data-id="${s.id}">Hapus</button>`;
+                li.className = 'flex justify-between items-center bg-white/5 border border-white/10 px-5 py-3 rounded-xl';
+                li.innerHTML = `<span class="text-zinc-200 font-medium">${s.skill_name}</span> <button class="del-skill-btn text-xs text-red-400 hover:text-red-300 uppercase tracking-widest font-bold" data-id="${s.id}">Hapus</button>`;
                 list.appendChild(li);
             });
 
