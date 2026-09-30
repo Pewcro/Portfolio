@@ -1,31 +1,31 @@
 # Portfolio Website — Jonathan Parulian Tobing
 
-A dynamic, elegant, and modern space-themed portfolio website.
+A dynamic, elegant, and modern tech-themed portfolio website powered by Supabase.
 
-This version is **100% Static HTML/CSS/JS**, optimized for instant and free deployment on platforms like **Vercel**, **GitHub Pages**, or **Netlify**.
+This version is built using **HTML/CSS/JS** with a **Serverless Backend (Supabase)**, optimized for deployment on platforms like **Vercel** while retaining dynamic data management capabilities.
 
 ## ✨ Features
-- Elegant dark space-themed design with subtle animations
-- Glassmorphism UI
+- **Modern Cyberpunk/Tech Grid Theme** with a subtle glowing aurora background
+- **Integrated Admin Dashboard** (`/admin.html`) to manage the website without touching code
+- **Dynamic Content Management** for Projects, Skills, Social Links, and Profile
+- **Image Upload Integration** directly to Supabase Storage
+- **Glassmorphism UI** with smooth 3D tilt effects on project cards
 - Fully responsive (mobile-friendly)
-- Smooth 3D tilt effects on cards
-- No backend required — loads instantly!
 
-## 🚀 How to Edit
-Since this is a static website, you can edit all your data directly inside the `index.html` file. 
-
-Look for these sections in `index.html` to change your information:
-- `<title>`: Your website title
-- `<h1 class="... grad-text ...">`: Your name
-- `new Typed('#typed', {...})`: Your roles (at the bottom in the `<script>` tag)
-- `<!-- ────────────────────── PROJECTS -->`: To add/remove projects
+## 🚀 How to Manage Content
+Unlike a purely static site, this portfolio uses a database!
+1. Go to your live website and add `/admin.html` to the URL.
+2. Log in using your secure credentials.
+3. Manage your **Profile**, upload new cover images, add **Projects**, update **Skills**, and change **Social Links** instantly.
+4. Click "Save", and your homepage updates automatically.
 
 ## 🌐 Deploy to Vercel
 1. Upload this folder to your GitHub repository.
 2. Go to [Vercel.com](https://vercel.com/) and log in with GitHub.
 3. Click **"Add New Project"** and import your portfolio repository.
-4. Click **Deploy**. That's it! Vercel will automatically host your `index.html`.
+4. Click **Deploy**. That's it! Vercel will automatically host your frontend, connecting seamlessly to your Supabase backend.
 
 ## 🛠️ Tech Stack
-- **Frontend:** HTML5, Tailwind CSS, JavaScript
-- **Libraries:** Typed.js, Vanilla-Tilt.js, Font Awesome
+- **Frontend:** HTML5, Tailwind CSS, Vanilla JavaScript
+- **Backend & Database:** Supabase (PostgreSQL, Auth, Storage)
+- **Libraries:** Typed.js, Vanilla-Tilt.js, FontAwesome
