@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import Background from "@/components/Background";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -17,8 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.className} selection:bg-white selection:text-black`}>
-        <div className="bg-glow"></div>
-        <div className="bg-grid"></div>
+        <Background />
         {children}
       </body>
     </html>

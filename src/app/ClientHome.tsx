@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Typed from 'typed.js';
+import { motion } from 'framer-motion';
 
 export default function ClientHome({ profile, projects, skills, socials }: any) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -28,27 +29,6 @@ export default function ClientHome({ profile, projects, skills, socials }: any) 
     }
   }, [profile]);
 
-  useEffect(() => {
-    const mouseGlow = document.getElementById('mouse-glow');
-    const moveGlow = (e: MouseEvent) => {
-      if (mouseGlow) {
-        mouseGlow.style.opacity = '1';
-        mouseGlow.style.left = e.clientX + 'px';
-        mouseGlow.style.top = e.clientY + 'px';
-      }
-    };
-    const hideGlow = () => {
-      if (mouseGlow) mouseGlow.style.opacity = '0';
-    };
-
-    window.addEventListener('mousemove', moveGlow);
-    window.addEventListener('mouseout', hideGlow);
-    return () => {
-      window.removeEventListener('mousemove', moveGlow);
-      window.removeEventListener('mouseout', hideGlow);
-    };
-  }, []);
-
   const getIconClass = (platform: string) => {
     const p = platform.toLowerCase();
     if (p === 'github') return 'fa-github';
@@ -62,7 +42,6 @@ export default function ClientHome({ profile, projects, skills, socials }: any) 
   return (
     <>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-      <div id="mouse-glow" className="mouse-glow"></div>
 
       {/* Navigation */}
       <nav id="nav" className={`fixed w-full z-50 transition-all duration-500 flex justify-between items-center px-6 md:px-14 ${isScrolled ? 'scrolled py-4' : 'py-6'}`}>
@@ -143,24 +122,35 @@ export default function ClientHome({ profile, projects, skills, socials }: any) 
             <div className="h-px bg-white/10 flex-grow max-w-xs"></div>
           </div>
           <div id="projects-container" className="grid md:grid-cols-2 gap-10">
-            {projects?.map((p: any) => (
-              <div key={p.id} className="proj-card glass rounded-2xl overflow-hidden flex flex-col">
-                <div className="h-56 overflow-hidden relative">
-                  <img src={p.image} alt={p.title} className="proj-img w-full h-full object-cover absolute inset-0" />
-                  <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/80 opacity-0 hover:opacity-100 transition-opacity backdrop-blur-sm">
-                    <a href={p.github_link} target="_blank" className="text-white/70 hover:text-white text-2xl transition-all hover:-translate-y-1">
-                      <i className="fab fa-github"></i>
+            {projects?.map((p: any, index: number) => (
+              <motion.div 
+                key={p.id} 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="proj-card glass rounded-2xl overflow-hidden flex flex-col group cursor-pointer"
+              >
+                <div className="h-64 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#030303] to-transparent z-10 opacity-60"></div>
+                  <img src={p.image} alt={p.title} className="proj-img w-full h-full object-cover absolute inset-0 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" />
+                  <div className="absolute inset-0 z-20 flex items-center justify-center gap-6 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                    <a href={p.github_link} target="_blank" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white/90 hover:text-white hover:bg-indigo-600 transition-all hover:scale-110 border border-white/20">
+                      <i className="fab fa-github text-xl"></i>
                     </a>
                   </div>
                 </div>
-                <div className="p-7 flex flex-col flex-grow">
-                  <h3 className="text-lg font-medium text-white mb-2 tracking-wide">{p.title}</h3>
-                  <p className="text-zinc-400 text-sm flex-grow leading-relaxed mb-6">{p.description}</p>
-                  <div className="flex flex-wrap gap-3 text-xs text-zinc-500 uppercase tracking-widest">
-                    {p.tags.split(',').map((t: string, i: number) => <span key={i}>{t.trim()}</span>)}
+                <div className="p-8 flex flex-col flex-grow relative z-20 bg-gradient-to-b from-transparent to-black/40">
+                  <h3 className="text-2xl font-light text-white mb-3 tracking-wide group-hover:text-indigo-400 transition-colors">{p.title}</h3>
+                  <p className="text-zinc-400 text-sm flex-grow leading-relaxed mb-8 font-light">{p.description}</p>
+                  <div className="flex flex-wrap gap-2 text-[10px] text-zinc-300 uppercase tracking-[0.2em] font-medium">
+                    {p.tags.split(',').map((t: string, i: number) => (
+                      <span key={i} className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10">{t.trim()}</span>
+                    ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
